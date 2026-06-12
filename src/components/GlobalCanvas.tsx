@@ -24,7 +24,7 @@ export default function GlobalCanvas() {
         <FloatingOrbs />
 
         {/* Post-Processing - Subtle */}
-        <EffectComposer disableNormalPass>
+        <EffectComposer>
           <Bloom
             luminanceThreshold={0.4}
             luminanceSmoothing={0.9}

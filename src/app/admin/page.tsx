@@ -311,7 +311,7 @@ export default function AdminPanel() {
         const resourceType = file.type.startsWith('video') ? 'video' : 'image'
         const url = await uploadToCloudinary(file, resourceType)
 
-        const newItems = [...(content.contentShowcase?.[field as keyof typeof content.contentShowcase] || []), {
+        const newItems = [...((content.contentShowcase as any)?.[field] || []), {
           id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
           url: url,
           type: file.type.startsWith('video') ? 'video' : 'image',
@@ -342,9 +342,9 @@ export default function AdminPanel() {
 
   const toggleMute = (field: string, index: number) => {
     try {
-      const currentItems = content.contentShowcase?.[field as keyof typeof content.contentShowcase]
+      const currentItems = (content.contentShowcase as any)?.[field]
       if (!currentItems || !Array.isArray(currentItems)) return
-      const newItems = [...currentItems]
+      const newItems = [...currentItems] as any[]
       if (newItems[index]) {
         newItems[index] = { ...newItems[index], muted: !newItems[index].muted }
         setContent((prev: any) => ({ ...prev, contentShowcase: { ...prev.contentShowcase, [field]: newItems } }))
@@ -815,13 +815,13 @@ export default function AdminPanel() {
                 </button>
               </div>
               <div className="grid gap-4">
-                {content.projects.items.map((project: any, i: number) => (
+                {(content as any).projects.items.map((project: any, i: number) => (
                   <div key={i} className="bg-gray-800 p-6 rounded-lg">
                     <div className="flex items-center justify-between mb-4">
                       <span className="font-semibold text-lg">Project {i + 1}</span>
                       <div className="flex items-center gap-3">
                         <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" checked={project.featured} onChange={(e) => { const newItems = [...content.projects.items]; newItems[i].featured = e.target.checked; updateField('projects', 'items', newItems) }} className="w-4 h-4" />
+                          <input type="checkbox" checked={project.featured} onChange={(e) => { const newItems = [...(content as any).projects.items]; newItems[i].featured = e.target.checked; updateField('projects', 'items', newItems) }} className="w-4 h-4" />
                           <span className="text-sm text-gray-400">Featured</span>
                         </label>
                         <button onClick={() => removeItem('projects', i)} className="text-red-400 hover:text-red-300"><Trash2 className="w-4 h-4" /></button>
@@ -830,18 +830,18 @@ export default function AdminPanel() {
                     <div className="grid gap-4">
                       {/* Basic Info - Row 1 */}
                       <div className="grid grid-cols-2 gap-4">
-                        <input type="text" value={project.title} onChange={(e) => { const newItems = [...content.projects.items]; newItems[i].title = e.target.value; updateField('projects', 'items', newItems) }} className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Project Title" />
-                        <input type="text" value={project.client} onChange={(e) => { const newItems = [...content.projects.items]; newItems[i].client = e.target.value; updateField('projects', 'items', newItems) }} className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Client Name" />
+                        <input type="text" value={project.title} onChange={(e) => { const newItems = [...(content as any).projects.items]; newItems[i].title = e.target.value; updateField('projects', 'items', newItems) }} className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Project Title" />
+                        <input type="text" value={project.client} onChange={(e) => { const newItems = [...(content as any).projects.items]; newItems[i].client = e.target.value; updateField('projects', 'items', newItems) }} className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Client Name" />
                       </div>
 
                       {/* SEO Slug & Category - Row 2 */}
                       <div className="grid grid-cols-2 gap-4">
-                        <input type="text" value={project.slug || ''} onChange={(e) => { const newItems = [...content.projects.items]; newItems[i].slug = e.target.value; updateField('projects', 'items', newItems) }} className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="SEO Slug (e.g., brand-campaign)" />
-                        <input type="text" value={project.category} onChange={(e) => { const newItems = [...content.projects.items]; newItems[i].category = e.target.value; updateField('projects', 'items', newItems) }} className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Category (e.g., Social Media, Ad Campaign)" />
+                        <input type="text" value={project.slug || ''} onChange={(e) => { const newItems = [...(content as any).projects.items]; newItems[i].slug = e.target.value; updateField('projects', 'items', newItems) }} className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="SEO Slug (e.g., brand-campaign)" />
+                        <input type="text" value={project.category} onChange={(e) => { const newItems = [...(content as any).projects.items]; newItems[i].category = e.target.value; updateField('projects', 'items', newItems) }} className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Category (e.g., Social Media, Ad Campaign)" />
                       </div>
 
                       {/* Short Description */}
-                      <textarea value={project.description} onChange={(e) => { const newItems = [...content.projects.items]; newItems[i].description = e.target.value; updateField('projects', 'items', newItems) }} rows={2} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Short Description (for project cards)" />
+                      <textarea value={project.description} onChange={(e) => { const newItems = [...(content as any).projects.items]; newItems[i].description = e.target.value; updateField('projects', 'items', newItems) }} rows={2} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Short Description (for project cards)" />
 
                       {/* Cover Image */}
                       <div className="bg-gray-700/50 p-4 rounded-lg">
@@ -849,7 +849,7 @@ export default function AdminPanel() {
                         {project.coverImage ? (
                           <div className="relative">
                             <img src={project.coverImage} alt="Cover" className="w-full h-48 object-cover rounded-lg" />
-                            <button onClick={() => { const newItems = [...content.projects.items]; newItems[i].coverImage = ''; updateField('projects', 'items', newItems) }} className="absolute top-2 right-2 p-2 bg-red-600 rounded-lg"><X className="w-4 h-4" /></button>
+                            <button onClick={() => { const newItems = [...(content as any).projects.items]; newItems[i].coverImage = ''; updateField('projects', 'items', newItems) }} className="absolute top-2 right-2 p-2 bg-red-600 rounded-lg"><X className="w-4 h-4" /></button>
                           </div>
                         ) : (
                           <label className="w-full h-32 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-colors">
@@ -867,24 +867,24 @@ export default function AdminPanel() {
                         {/* Full Description */}
                         <div className="mb-4">
                           <label className="text-sm text-gray-400 block mb-2">Full Project Description</label>
-                          <textarea value={project.fullDescription || ''} onChange={(e) => { const newItems = [...content.projects.items]; newItems[i].fullDescription = e.target.value; updateField('projects', 'items', newItems) }} rows={4} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Full description for project details page" />
+                          <textarea value={project.fullDescription || ''} onChange={(e) => { const newItems = [...(content as any).projects.items]; newItems[i].fullDescription = e.target.value; updateField('projects', 'items', newItems) }} rows={4} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Full description for project details page" />
                         </div>
 
                         {/* Business Challenge */}
                         <div className="mb-4">
                           <label className="text-sm text-gray-400 block mb-2">Business Challenge</label>
-                          <textarea value={project.challenge || ''} onChange={(e) => { const newItems = [...content.projects.items]; newItems[i].challenge = e.target.value; updateField('projects', 'items', newItems) }} rows={3} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="What business challenge did this project address?" />
+                          <textarea value={project.challenge || ''} onChange={(e) => { const newItems = [...(content as any).projects.items]; newItems[i].challenge = e.target.value; updateField('projects', 'items', newItems) }} rows={3} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="What business challenge did this project address?" />
                         </div>
 
                         {/* Industry & Timeline - Row 1 */}
                         <div className="grid grid-cols-2 gap-4 mb-4">
                           <div>
                             <label className="text-sm text-gray-400 block mb-2">Industry</label>
-                            <input type="text" value={project.industry || ''} onChange={(e) => { const newItems = [...content.projects.items]; newItems[i].industry = e.target.value; updateField('projects', 'items', newItems) }} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="e.g., Technology, Fashion" />
+                            <input type="text" value={project.industry || ''} onChange={(e) => { const newItems = [...(content as any).projects.items]; newItems[i].industry = e.target.value; updateField('projects', 'items', newItems) }} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="e.g., Technology, Fashion" />
                           </div>
                           <div>
                             <label className="text-sm text-gray-400 block mb-2">Timeline</label>
-                            <input type="text" value={project.timeline || ''} onChange={(e) => { const newItems = [...content.projects.items]; newItems[i].timeline = e.target.value; updateField('projects', 'items', newItems) }} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="e.g., 3 months" />
+                            <input type="text" value={project.timeline || ''} onChange={(e) => { const newItems = [...(content as any).projects.items]; newItems[i].timeline = e.target.value; updateField('projects', 'items', newItems) }} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="e.g., 3 months" />
                           </div>
                         </div>
 
@@ -895,11 +895,11 @@ export default function AdminPanel() {
                             {(project.services || []).map((service: string, si: number) => (
                               <span key={si} className="px-3 py-1 bg-purple-600/20 text-purple-400 rounded-full flex items-center gap-2">
                                 {service}
-                                <button onClick={() => { const newItems = [...content.projects.items]; newItems[i].services = newItems[i].services.filter((_: any, s: number) => s !== si); updateField('projects', 'items', newItems) }}><X className="w-3 h-3" /></button>
+                                <button onClick={() => { const newItems = [...(content as any).projects.items]; newItems[i].services = newItems[i].services.filter((_: any, s: number) => s !== si); updateField('projects', 'items', newItems) }}><X className="w-3 h-3" /></button>
                               </span>
                             ))}
                           </div>
-                          <input type="text" placeholder="Add service and press Enter" className="w-full mt-3 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:border-purple-500 focus:outline-none" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { const newItems = [...content.projects.items]; newItems[i].services = [...(newItems[i].services || []), e.currentTarget.value]; updateField('projects', 'items', newItems); e.currentTarget.value = '' } }} />
+                          <input type="text" placeholder="Add service and press Enter" className="w-full mt-3 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:border-purple-500 focus:outline-none" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { const newItems = [...(content as any).projects.items]; newItems[i].services = [...(newItems[i].services || []), e.currentTarget.value]; updateField('projects', 'items', newItems); e.currentTarget.value = '' } }} />
                         </div>
 
                         {/* Objectives */}
@@ -909,11 +909,11 @@ export default function AdminPanel() {
                             {(project.objectives || []).map((obj: string, oi: number) => (
                               <span key={oi} className="px-3 py-1 bg-blue-600/20 text-blue-400 rounded-full flex items-center gap-2">
                                 {obj}
-                                <button onClick={() => { const newItems = [...content.projects.items]; newItems[i].objectives = newItems[i].objectives.filter((_: any, o: number) => o !== oi); updateField('projects', 'items', newItems) }}><X className="w-3 h-3" /></button>
+                                <button onClick={() => { const newItems = [...(content as any).projects.items]; newItems[i].objectives = newItems[i].objectives.filter((_: any, o: number) => o !== oi); updateField('projects', 'items', newItems) }}><X className="w-3 h-3" /></button>
                               </span>
                             ))}
                           </div>
-                          <input type="text" placeholder="Add objective and press Enter" className="w-full mt-3 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { const newItems = [...content.projects.items]; newItems[i].objectives = [...(newItems[i].objectives || []), e.currentTarget.value]; updateField('projects', 'items', newItems); e.currentTarget.value = '' } }} />
+                          <input type="text" placeholder="Add objective and press Enter" className="w-full mt-3 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { const newItems = [...(content as any).projects.items]; newItems[i].objectives = [...(newItems[i].objectives || []), e.currentTarget.value]; updateField('projects', 'items', newItems); e.currentTarget.value = '' } }} />
                         </div>
 
                         {/* Tools Used */}
@@ -923,11 +923,11 @@ export default function AdminPanel() {
                             {(project.tools || []).map((tool: string, ti: number) => (
                               <span key={ti} className="px-3 py-1 bg-green-600/20 text-green-400 rounded-full flex items-center gap-2">
                                 {tool}
-                                <button onClick={() => { const newItems = [...content.projects.items]; newItems[i].tools = newItems[i].tools.filter((_: any, t: number) => t !== ti); updateField('projects', 'items', newItems) }}><X className="w-3 h-3" /></button>
+                                <button onClick={() => { const newItems = [...(content as any).projects.items]; newItems[i].tools = newItems[i].tools.filter((_: any, t: number) => t !== ti); updateField('projects', 'items', newItems) }}><X className="w-3 h-3" /></button>
                               </span>
                             ))}
                           </div>
-                          <input type="text" placeholder="Add tool and press Enter" className="w-full mt-3 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:border-green-500 focus:outline-none" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { const newItems = [...content.projects.items]; newItems[i].tools = [...(newItems[i].tools || []), e.currentTarget.value]; updateField('projects', 'items', newItems); e.currentTarget.value = '' } }} />
+                          <input type="text" placeholder="Add tool and press Enter" className="w-full mt-3 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:border-green-500 focus:outline-none" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { const newItems = [...(content as any).projects.items]; newItems[i].tools = [...(newItems[i].tools || []), e.currentTarget.value]; updateField('projects', 'items', newItems); e.currentTarget.value = '' } }} />
                         </div>
 
                         {/* Project Gallery */}
@@ -937,7 +937,7 @@ export default function AdminPanel() {
                             {(project.gallery || []).map((img: string, gi: number) => (
                               <div key={gi} className="relative">
                                 <img src={img} alt={`Gallery ${gi + 1}`} className="w-full h-24 object-cover rounded-lg" />
-                                <button onClick={() => { const newItems = [...content.projects.items]; newItems[i].gallery = newItems[i].gallery.filter((_: any, g: number) => g !== gi); updateField('projects', 'items', newItems) }} className="absolute top-1 right-1 p-1 bg-red-600 rounded-full">
+                                <button onClick={() => { const newItems = [...(content as any).projects.items]; newItems[i].gallery = newItems[i].gallery.filter((_: any, g: number) => g !== gi); updateField('projects', 'items', newItems) }} className="absolute top-1 right-1 p-1 bg-red-600 rounded-full">
                                   <X className="w-3 h-3" />
                                 </button>
                               </div>
@@ -952,7 +952,7 @@ export default function AdminPanel() {
                                 Array.from(files).forEach(file => {
                                   const reader = new FileReader()
                                   reader.onload = (ev) => {
-                                    const newItems = [...content.projects.items]
+                                    const newItems = [...(content as any).projects.items]
                                     newItems[i].gallery = [...(newItems[i].gallery || []), ev.target?.result as string]
                                     updateField('projects', 'items', newItems)
                                   }
@@ -970,7 +970,7 @@ export default function AdminPanel() {
                         {project.image ? (
                           <div className="relative">
                             <img src={project.image} alt="Project" className="w-full h-48 object-cover rounded-lg" />
-                            <button onClick={() => { const newItems = [...content.projects.items]; newItems[i].image = ''; updateField('projects', 'items', newItems) }} className="absolute top-2 right-2 p-2 bg-red-600 rounded-lg"><X className="w-4 h-4" /></button>
+                            <button onClick={() => { const newItems = [...(content as any).projects.items]; newItems[i].image = ''; updateField('projects', 'items', newItems) }} className="absolute top-2 right-2 p-2 bg-red-600 rounded-lg"><X className="w-4 h-4" /></button>
                           </div>
                         ) : (
                           <label className="w-full h-32 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-colors">
@@ -987,7 +987,7 @@ export default function AdminPanel() {
                         {project.video ? (
                           <div className="relative">
                             <video src={project.video} controls className="w-full h-48 object-cover rounded-lg" />
-                            <button onClick={() => { const newItems = [...content.projects.items]; newItems[i].video = ''; updateField('projects', 'items', newItems) }} className="absolute top-2 right-2 p-2 bg-red-600 rounded-lg"><X className="w-4 h-4" /></button>
+                            <button onClick={() => { const newItems = [...(content as any).projects.items]; newItems[i].video = ''; updateField('projects', 'items', newItems) }} className="absolute top-2 right-2 p-2 bg-red-600 rounded-lg"><X className="w-4 h-4" /></button>
                           </div>
                         ) : (
                           <label className="w-full h-32 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 transition-colors">
@@ -1005,11 +1005,11 @@ export default function AdminPanel() {
                           {(project.results || []).map((result: string, ri: number) => (
                             <span key={ri} className="px-3 py-1 bg-green-600/20 text-green-400 rounded-full flex items-center gap-2">
                               {result}
-                              <button onClick={() => { const newItems = [...content.projects.items]; newItems[i].results = newItems[i].results.filter((_: any, r: number) => r !== ri); updateField('projects', 'items', newItems) }}><X className="w-3 h-3" /></button>
+                              <button onClick={() => { const newItems = [...(content as any).projects.items]; newItems[i].results = newItems[i].results.filter((_: any, r: number) => r !== ri); updateField('projects', 'items', newItems) }}><X className="w-3 h-3" /></button>
                             </span>
                           ))}
                         </div>
-                        <input type="text" placeholder="Add result (e.g., 300% Growth) and press Enter" className="w-full mt-3 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { const newItems = [...content.projects.items]; newItems[i].results = [...(newItems[i].results || []), e.currentTarget.value]; updateField('projects', 'items', newItems); e.currentTarget.value = '' } }} />
+                        <input type="text" placeholder="Add result (e.g., 300% Growth) and press Enter" className="w-full mt-3 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { const newItems = [...(content as any).projects.items]; newItems[i].results = [...(newItems[i].results || []), e.currentTarget.value]; updateField('projects', 'items', newItems); e.currentTarget.value = '' } }} />
                       </div>
                     </div>
                   </div>
@@ -1125,7 +1125,7 @@ export default function AdminPanel() {
                 <h3 className="font-semibold mb-4 text-purple-400">Row 1: Vertical Videos (Reels)</h3>
                 <div className="grid gap-4">
                   {(content.contentShowcase?.verticalReels || []).map((item: any, i: number) => (
-                    <ContentShowcaseItem key={item.id} index={i} item={item} items={content.contentShowcase?.verticalReels || []} field="verticalReels" />
+                    <ContentShowcaseItem key={item.id} index={i} item={item} field="verticalReels" />
                   ))}
                   <label className={`w-full p-4 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
                     {uploading ? (
@@ -1149,7 +1149,7 @@ export default function AdminPanel() {
                 <h3 className="font-semibold mb-4 text-blue-400">Row 2: Horizontal Videos</h3>
                 <div className="grid gap-4">
                   {(content.contentShowcase?.horizontalReels || []).map((item: any, i: number) => (
-                    <ContentShowcaseItem key={item.id} index={i} item={item} items={content.contentShowcase?.horizontalReels || []} field="horizontalReels" />
+                    <ContentShowcaseItem key={item.id} index={i} item={item} field="horizontalReels" />
                   ))}
                   <label className={`w-full p-4 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
                     {uploading ? (
@@ -1173,7 +1173,7 @@ export default function AdminPanel() {
                 <h3 className="font-semibold mb-4 text-pink-400">Row 3: Vertical Posts (Images)</h3>
                 <div className="grid gap-4">
                   {(content.contentShowcase?.verticalPosts || []).map((item: any, i: number) => (
-                    <ContentShowcaseItem key={item.id} index={i} item={item} items={content.contentShowcase?.verticalPosts || []} field="verticalPosts" isImage />
+                    <ContentShowcaseItem key={item.id} index={i} item={item} field="verticalPosts" isImage />
                   ))}
                   <label className={`w-full p-4 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-pink-500 transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
                     {uploading ? (
@@ -1197,7 +1197,7 @@ export default function AdminPanel() {
                 <h3 className="font-semibold mb-4 text-green-400">Row 4: Horizontal Posts (Images)</h3>
                 <div className="grid gap-4">
                   {(content.contentShowcase?.horizontalPosts || []).map((item: any, i: number) => (
-                    <ContentShowcaseItem key={item.id} index={i} item={item} items={content.contentShowcase?.horizontalPosts || []} field="horizontalPosts" isImage />
+                    <ContentShowcaseItem key={item.id} index={i} item={item} field="horizontalPosts" isImage />
                   ))}
                   <label className={`w-full p-4 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-green-500 transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
                     {uploading ? (
