@@ -1,4 +1,5 @@
 'use client'
+// Admin Panel - Content Management System
 import React, { useState, useEffect, useRef } from 'react'
 import { Save, Eye, Plus, Trash2, Upload, X, Image, Video, Settings, Briefcase, Building, Layers, Palette, FileText, Link, Copy, RefreshCw, Loader2, Volume2, VolumeX } from 'lucide-react'
 
