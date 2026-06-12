@@ -13,6 +13,7 @@
     "@react-three/fiber": "^8.16.8",
     "@react-three/postprocessing": "^2.16.2",
     "@studio-freight/react-lenis": "^0.0.47",
+    "cloudinary": "^2.10.0",
     "framer-motion": "^11.2.10",
     "gsap": "^3.12.5",
     "lucide-react": "^0.395.0",

@@ -1,60 +1,69 @@
 'use client'
-import React, { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import React from 'react'
+import { useContent } from '@/context/ContentContext'
 
 export default function About() {
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.about-text', {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 80%',
-        },
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.2,
-      })
-    }, containerRef)
-    return () => ctx.revert()
-  }, [])
+  const { content } = useContent()
 
   return (
-    <section ref={containerRef} className="relative w-full py-32 px-6 z-10">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
-        <div className="w-full md:w-1/2">
-          <div className="glass-panel p-8 md:p-12 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-accent-blue/20 blur-3xl rounded-full"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-accent-purple/20 blur-3xl rounded-full"></div>
-            
-            <h3 className="about-text text-accent-blue tracking-widest uppercase text-sm font-semibold mb-4">The Journey</h3>
-            <h2 className="about-text text-4xl md:text-5xl font-display font-bold mb-6 leading-tight">
-              From Content Handler to <br/>
-              <span className="neon-text">Digital Architect</span>
-            </h2>
-            <p className="about-text text-white/70 text-lg leading-relaxed mb-6">
-              With 2 years of intense industry experience, I've transitioned from executing basic content plans to architecting comprehensive digital ecosystems. I don't just manage social media; I engineer brand growth.
-            </p>
-            <ul className="about-text grid grid-cols-2 gap-4 text-white/80 font-medium">
-              <li className="flex items-center gap-2">✓ Meta Ads</li>
-              <li className="flex items-center gap-2">✓ Creative Direction</li>
-              <li className="flex items-center gap-2">✓ AI Automation</li>
-              <li className="flex items-center gap-2">✓ Content Strategy</li>
-            </ul>
+    <section className="relative w-full py-40 px-6 z-10">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
+          {/* Left - Profile */}
+          <div className="relative aspect-[4/5] max-w-[340px] sm:max-w-md mx-auto lg:mx-0 w-full">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-dark to-blue-500/20 rounded-3xl" />
+            <div className="absolute inset-0 bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden">
+              {content.about.profileImage ? (
+                <img
+                  src={content.about.profileImage}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
+                  <span className="text-4xl font-bold text-white">DP</span>
+                  <h4 className="text-2xl font-bold text-white mb-1 mt-6">{content.settings?.siteName || 'Darsh Pandav'}</h4>
+                  <p className="text-white/50 text-sm">{content.settings?.siteTitle || 'Digital Growth Strategist'}</p>
+                </div>
+              )}
+              {/* Gradient overlay for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+            </div>
+            <div className="absolute inset-x-0 bottom-0 pb-8 px-8 flex flex-col items-center pointer-events-none">
+              <h4 className="text-2xl font-bold text-white mb-1">{content.settings?.siteName || 'Darsh Pandav'}</h4>
+              <p className="text-white/80 text-sm font-medium">{content.settings?.siteTitle || 'Digital Growth Strategist'}</p>
+            </div>
           </div>
-        </div>
-        
-        <div className="w-full md:w-1/2 flex justify-center">
-          <div className="relative w-64 h-96 glass-card border-accent-silver/20 rotate-3 hover:rotate-0 transition-transform duration-500 overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/10 to-accent-purple/10 group-hover:from-accent-blue/30 group-hover:to-accent-purple/30 transition-colors"></div>
-            <div className="absolute bottom-6 left-6 right-6">
-              <h4 className="text-2xl font-display font-bold">Darsh Pandav</h4>
-              <p className="text-white/50 text-sm">Creative Coordinator</p>
+
+          {/* Right - Content */}
+          <div>
+            <span className="inline-block text-xs font-semibold uppercase tracking-[0.3em] text-blue-400 mb-4">
+              {content.about.tagline}
+            </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
+              {content.about.title}
+            </h2>
+            <p className="text-white/60 text-lg leading-relaxed mb-8">
+              {content.about.description}
+            </p>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-6 mb-10">
+              {content.about.stats.map((stat: any, i: number) => (
+                <div key={i} className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
+                  <div className="text-xs text-white/40 uppercase tracking-wider">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Skills */}
+            <div className="flex flex-wrap gap-3">
+              {content.about.skills.map((skill: string, i: number) => (
+                <span key={i} className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-white/70">
+                  {skill}
+                </span>
+              ))}
             </div>
           </div>
         </div>

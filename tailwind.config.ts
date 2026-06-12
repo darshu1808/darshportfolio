@@ -9,11 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        dark: "#0F0F11",
+        dark: "#0B1020",
+        "dark-alt": "#111827",
         accent: {
-          blue: "#00D4FF",
-          purple: "#B026FF",
-          silver: "#E0E0E0"
+          blue: "#00C2FF",
+          purple: "#6D5EF3",
+          silver: "#FFFFFF"
         }
       },
       fontFamily: {

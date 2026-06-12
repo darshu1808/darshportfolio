@@ -2,6 +2,8 @@
 import React from 'react'
 import { ReactLenis } from '@studio-freight/react-lenis'
 import GlobalCanvas from '../components/GlobalCanvas'
+import Navigation from '../components/Navigation'
+import Brands from '../components/Brands'
 import Hero from '../components/Hero'
 import About from '../components/About'
 import Services from '../components/Services'
@@ -12,24 +14,24 @@ import Testimonials from '../components/Testimonials'
 import Skills from '../components/Skills'
 import Contact from '../components/Contact'
 import CustomCursor from '../components/CustomCursor'
-import Preloader from '../components/Preloader'
 
 export default function Home() {
   return (
     <ReactLenis root options={{ lerp: 0.05, smoothWheel: true }}>
       <CustomCursor />
-      <Preloader />
       <GlobalCanvas />
+      <Navigation />
       <main className="relative w-full flex flex-col min-h-screen z-10">
         <Hero />
         <About />
         <Services />
+        <Brands />
         <CaseStudies />
         <ContentShowcase />
         <Workflow />
         <Testimonials />
         <Skills />
-        <Contact />
+        <Contact id="contact" />
       </main>
     </ReactLenis>
   )

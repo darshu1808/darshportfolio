@@ -1,0 +1,168 @@
+{
+  "hero": {
+    "tagline": "AI-Powered Marketing Strategy",
+    "title": {
+      "line1": "Creative",
+      "line2": "Growth",
+      "line3": "Strategist"
+    },
+    "subtitle": "Transforming brands through data-driven strategies, AI-powered marketing, and creative storytelling that scales.",
+    "cta": {
+      "primary": "View Projects",
+      "secondary": "Let's Talk"
+    },
+    "stats": [
+      { "value": "2+", "label": "Years Experience" },
+      { "value": "50+", "label": "Campaigns" },
+      { "value": "10M+", "label": "Reach" },
+      { "value": "200%", "label": "Avg Growth" }
+    ],
+    "analytics": {
+      "reach": { "value": "2.4M", "growth": "+127%", "chart": [40, 65, 45, 80, 60, 90, 75, 55, 70, 85] },
+      "engagement": { "value": "75%", "growth": "+89%" },
+      "ai": { "bestTime": "9:00 PM", "topFormat": "Reels", "audience": "18-34" }
+    }
+  },
+  "about": {
+    "tagline": "About Me",
+    "title": "Building Brands with Intelligence & Creativity",
+    "description": "I'm a digital marketer and creative growth strategist who combines data-driven insights with bold creative vision. From content execution to AI-powered marketing ecosystems, I help brands scale through strategic innovation.",
+    "profileImage": "",
+    "stats": [
+      { "value": "2+", "label": "Years" },
+      { "value": "50+", "label": "Campaigns" },
+      { "value": "10M+", "label": "Reach" }
+    ],
+    "skills": ["Meta Ads", "Content Strategy", "AI Automation", "Creative Direction", "Data Analytics"]
+  },
+  "services": {
+    "tagline": "Services",
+    "title": "What I Do",
+    "description": "Comprehensive digital solutions designed to elevate your brand and drive measurable growth.",
+    "items": [
+      { "icon": "Share2", "title": "Social Media Management", "desc": "End-to-end community building and brand presence that converts followers into loyal customers.", "color": "#00C2FF" },
+      { "icon": "PenTool", "title": "Content Strategy", "desc": "Data-driven content pillars and editorial calendars that maximize engagement and reach.", "color": "#6D5EF3" },
+      { "icon": "Target", "title": "Meta Ads", "desc": "Precision-targeted Facebook & Instagram campaigns designed for maximum ROAS.", "color": "#00C2FF" },
+      { "icon": "Wand2", "title": "Creative Direction", "desc": "Visual storytelling and brand aesthetics that align with premium market standards.", "color": "#6D5EF3" },
+      { "icon": "Bot", "title": "AI Automation", "desc": "Cutting-edge AI workflows that scale your marketing output 10x faster.", "color": "#00C2FF" },
+      { "icon": "TrendingUp", "title": "Growth Strategy", "desc": "Comprehensive roadmaps for sustainable market dominance and brand scaling.", "color": "#6D5EF3" }
+    ]
+  },
+  "skills": {
+    "tagline": "Expertise",
+    "title": "Skills & Capabilities",
+    "description": "A curated set of skills designed to deliver exceptional results for your brand.",
+    "items": [
+      { "name": "Meta Ads", "value": 95, "color": "#00C2FF" },
+      { "name": "Content Strategy", "value": 90, "color": "#6D5EF3" },
+      { "name": "Creative Direction", "value": 85, "color": "#00C2FF" },
+      { "name": "AI Automation", "value": 92, "color": "#6D5EF3" },
+      { "name": "Data Analytics", "value": 88, "color": "#00C2FF" },
+      { "name": "Copywriting", "value": 85, "color": "#6D5EF3" }
+    ]
+  },
+  "testimonials": {
+    "tagline": "Testimonials",
+    "title": "Client Success",
+    "items": [
+      { "name": "Sarah J.", "role": "Founder, Aura", "text": "Darsh completely transformed our social presence. We saw a 3x ROI in month one. His strategic approach is unmatched.", "gradient": "from-[#00C2FF] to-[#6D5EF3]", "profileImage": "" },
+      { "name": "Michael T.", "role": "CMO, Nexus", "text": "The AI workflow integration saved our team 20 hours a week. Brilliant strategist who truly understands modern marketing.", "gradient": "from-[#6D5EF3] to-[#00C2FF]", "profileImage": "" },
+      { "name": "Elena R.", "role": "Director, TechNova", "text": "Our launch reached over a million people organically thanks to his content strategy. Exceptional creative vision.", "gradient": "from-[#00C2FF] to-[#6D5EF3]", "profileImage": "" },
+      { "name": "David L.", "role": "CEO, Elevate", "text": "Best creative direction we've ever had. Truly premium execution with measurable results every single time.", "gradient": "from-[#6D5EF3] to-[#00C2FF]", "profileImage": "" },
+      { "name": "Lisa M.", "role": "Startup Founder", "text": "Working with Darsh was transformative for our brand. His AI-powered approach took our marketing to the next level.", "gradient": "from-[#00C2FF] to-[#6D5EF3]", "profileImage": "" },
+      { "name": "James K.", "role": "Marketing Lead", "text": "The ROI speaks for itself. He's not just a marketer, he's a growth partner who truly cares about results.", "gradient": "from-[#6D5EF3] to-[#00C2FF]", "profileImage": "" }
+    ]
+  },
+  "workflow": {
+    "tagline": "Process",
+    "title": "How I Work",
+    "description": "A streamlined AI-powered workflow designed to deliver results efficiently.",
+    "steps": [
+      { "icon": "Lightbulb", "label": "Discovery", "desc": "Understanding your brand" },
+      { "icon": "FileText", "label": "Strategy", "desc": "Creating the roadmap" },
+      { "icon": "Palette", "label": "Creative", "desc": "Designing assets" },
+      { "icon": "Video", "label": "Production", "desc": "Content creation" },
+      { "icon": "Rocket", "label": "Launch", "desc": "Going live" },
+      { "icon": "BarChart3", "label": "Optimize", "desc": "Scaling results" }
+    ]
+  },
+  "contact": {
+    "tagline": "Contact",
+    "title": "Let's build something extraordinary",
+    "description": "Have a project in mind? Let's discuss how we can take your brand to the next level.",
+    "socials": [
+      { "icon": "Instagram", "label": "Instagram", "url": "https://instagram.com/" },
+      { "icon": "Linkedin", "label": "LinkedIn", "url": "https://linkedin.com/in/" },
+      { "icon": "Mail", "label": "Email", "url": "mailto:darsh@example.com" },
+      { "icon": "MessageCircle", "label": "WhatsApp", "url": "https://wa.me/" }
+    ]
+  },
+  "projects": {
+    "tagline": "Portfolio",
+    "title": "Featured Work",
+    "description": "A collection of projects showcasing my expertise in digital marketing and creative strategy.",
+    "items": [
+      {
+        "id": "1",
+        "slug": "brand-campaign",
+        "title": "Brand Campaign",
+        "client": "Tech Startup",
+        "category": "Social Media",
+        "description": "Complete social media overhaul resulting in 300% growth.",
+        "fullDescription": "Full project description goes here. Describe the complete scope of work, challenges faced, and solutions provided.",
+        "challenge": "What business challenge did this project address?",
+        "objectives": ["Objective 1", "Objective 2", "Objective 3"],
+        "services": ["Social Media Marketing", "Content Strategy", "Meta Ads"],
+        "industry": "Technology",
+        "timeline": "3 months",
+        "tools": ["Meta Business", "Canva", "Adobe Creative Cloud"],
+        "image": "",
+        "coverImage": "",
+        "video": "",
+        "gallery": [],
+        "results": ["300% Growth", "1M+ Reach"],
+        "featured": true
+      }
+    ]
+  },
+  "brands": {
+    "tagline": "Brands",
+    "title": "I've Worked With",
+    "description": "Trusted by leading brands across industries.",
+    "items": [
+      { "id": "1", "name": "Brand Name", "logo": "", "website": "" }
+    ]
+  },
+  "media": {
+    "gallery": []
+  },
+  "contentShowcase": {
+    "labels": {
+      "verticalReels": "Vertical Videos",
+      "horizontalReels": "Horizontal Videos",
+      "verticalPosts": "Vertical Posts",
+      "horizontalPosts": "Horizontal Posts"
+    },
+    "verticalReels": [],
+    "horizontalReels": [],
+    "verticalPosts": [],
+    "horizontalPosts": []
+  },
+  "settings": {
+    "siteName": "Darsh Pandav",
+    "siteTitle": "Digital Marketer & Growth Strategist",
+    "email": "darsh@example.com",
+    "phone": "+91 1234567890",
+    "location": "Mumbai, India",
+    "primaryColor": "#00C2FF",
+    "secondaryColor": "#6D5EF3"
+  },
+  "reels": {
+    "tagline": "Reels",
+    "title": "Watch My Work",
+    "description": "Latest Instagram Reels showcasing creative content and campaigns.",
+    "items": [
+      { "id": "1", "url": "", "caption": "", "views": "" }
+    ]
+  }
+}
