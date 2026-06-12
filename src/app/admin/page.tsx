@@ -272,34 +272,46 @@ export default function AdminPanel() {
     }))
   }
 
-  const handleImageUpload = (section: string, index: number, field: string, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (section: string, index: number, field: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
+      try {
+        setUploading(true)
+        const resourceType = file.type.startsWith('video') ? 'video' : 'image'
+        const url = await uploadToCloudinary(file, resourceType)
         const newItems = [...(content as any)[section].items]
-        newItems[index] = { ...newItems[index], [field]: e.target?.result as string }
+        newItems[index] = { ...newItems[index], [field]: url }
         updateField(section, 'items', newItems)
+      } catch (error) {
+        alert('Upload failed. Please try again.')
+        console.error(error)
+      } finally {
+        setUploading(false)
       }
-      reader.readAsDataURL(file)
     }
   }
 
-  const addToGallery = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const addToGallery = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
+      try {
+        setUploading(true)
+        const resourceType = file.type.startsWith('video') ? 'video' : 'image'
+        const url = await uploadToCloudinary(file, resourceType)
         const newGallery = [...(content.media?.gallery || []), {
           id: Date.now().toString(),
-          url: e.target?.result as string,
+          url: url,
           type: file.type.startsWith('video') ? 'video' : 'image',
           name: file.name,
           addedAt: new Date().toISOString()
         }]
         setContent((prev: any) => ({ ...prev, media: { gallery: newGallery } }))
+      } catch (error) {
+        alert('Upload failed. Please try again.')
+        console.error(error)
+      } finally {
+        setUploading(false)
       }
-      reader.readAsDataURL(file)
     }
   }
 
@@ -575,14 +587,18 @@ export default function AdminPanel() {
                     <label className="w-full h-32 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-colors">
                       <Image className="w-8 h-8 text-gray-500 mb-2" />
                       <span className="text-sm text-gray-500">Click to upload profile image</span>
-                      <input type="file" accept="image/*" className="hidden" onChange={(e) => {
+                      <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
                         const file = e.target.files?.[0]
                         if (file) {
-                          const reader = new FileReader()
-                          reader.onload = (ev) => {
-                            updateField('about', 'profileImage', ev.target?.result as string)
+                          try {
+                            setUploading(true)
+                            const url = await uploadToCloudinary(file, 'image')
+                            updateField('about', 'profileImage', url)
+                          } catch (error) {
+                            alert('Upload failed. Please try again.')
+                          } finally {
+                            setUploading(false)
                           }
-                          reader.readAsDataURL(file)
                         }
                       }} />
                     </label>
@@ -719,16 +735,20 @@ export default function AdminPanel() {
                         ) : (
                           <label className="w-16 h-16 rounded-full border-2 border-dashed border-gray-600 flex items-center justify-center cursor-pointer hover:border-blue-500 transition-colors">
                             <Image className="w-6 h-6 text-gray-500" />
-                            <input type="file" accept="image/*" className="hidden" onChange={(e) => {
+                            <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
                               const file = e.target.files?.[0]
                               if (file) {
-                                const reader = new FileReader()
-                                reader.onload = (ev) => {
+                                try {
+                                  setUploading(true)
+                                  const url = await uploadToCloudinary(file, 'image')
                                   const newItems = [...content.testimonials.items]
-                                  newItems[i].profileImage = ev.target?.result as string
+                                  newItems[i].profileImage = url
                                   updateField('testimonials', 'items', newItems)
+                                } catch (error) {
+                                  alert('Upload failed. Please try again.')
+                                } finally {
+                                  setUploading(false)
                                 }
-                                reader.readAsDataURL(file)
                               }
                             }} />
                           </label>
@@ -963,18 +983,22 @@ export default function AdminPanel() {
                           <label className="w-full h-20 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 transition-colors">
                             <Image className="w-6 h-6 text-gray-500 mb-1" />
                             <span className="text-xs text-gray-500">Click to add gallery images</span>
-                            <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => {
+                            <input type="file" accept="image/*" multiple className="hidden" onChange={async (e) => {
                               const files = e.target.files
                               if (files) {
-                                Array.from(files).forEach(file => {
-                                  const reader = new FileReader()
-                                  reader.onload = (ev) => {
+                                try {
+                                  setUploading(true)
+                                  for (const file of Array.from(files)) {
+                                    const url = await uploadToCloudinary(file, 'image')
                                     const newItems = [...(content as any).projects.items]
-                                    newItems[i].gallery = [...(newItems[i].gallery || []), ev.target?.result as string]
+                                    newItems[i].gallery = [...(newItems[i].gallery || []), url]
                                     updateField('projects', 'items', newItems)
                                   }
-                                  reader.readAsDataURL(file)
-                                })
+                                } catch (error) {
+                                  alert('Some uploads failed. Please try again.')
+                                } finally {
+                                  setUploading(false)
+                                }
                               }
                             }} />
                           </label>
