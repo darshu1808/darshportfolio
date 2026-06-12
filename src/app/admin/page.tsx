@@ -167,6 +167,7 @@ export default function AdminPanel() {
   const [saved, setSaved] = useState(false)
   const [activeTab, setActiveTab] = useState('content')
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
     const savedContent = localStorage.getItem('portfolioContent')
@@ -321,7 +322,6 @@ export default function AdminPanel() {
   }
 
   // Content Showcase handlers
-  const [uploading, setUploading] = useState(false)
 
   const handleContentUpload = async (event: React.ChangeEvent<HTMLInputElement>, field: string) => {
     const file = event.target.files?.[0]
