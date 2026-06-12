@@ -403,6 +403,11 @@ export default function AdminPanel() {
           <h1 className="text-xl font-bold">Portfolio Admin</h1>
           <span className="text-xs bg-gradient-to-r from-blue-600 to-purple-600 px-3 py-1 rounded-full">CMS v2.0</span>
         </div>
+        <div className="absolute top-full left-0 right-0 bg-yellow-600/90 text-white text-sm px-6 py-2 flex items-center gap-2 z-50">
+          <span className="font-bold">⚠️ Important:</span>
+          Use <span className="font-bold">Content</span> tab → <span className="font-bold">Content Showcase</span> for videos (auto-uploads to Cloudinary).
+          For other images, add external URLs or click <span className="font-bold">Export</span> → update <code className="bg-yellow-700 px-2 py-0.5 rounded">src/data/content.json</code> → push to GitHub!
+        </div>
         <div className="flex items-center gap-3">
           <label className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center gap-2 cursor-pointer transition-colors">
             <Upload className="w-4 h-4" />
