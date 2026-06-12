@@ -238,6 +238,13 @@ export default function AdminPanel() {
     }
   }
 
+  const handleSyncFromFile = () => {
+    if (confirm('Sync from content.json? This will reload all content from the file (GitHub version). Save your current work first by clicking Export!')) {
+      localStorage.removeItem('portfolioContent')
+      alert('Local storage cleared! Please refresh the page to load content from content.json')
+    }
+  }
+
   const updateField = (section: string, field: string, value: any) => {
     setContent((prev: any) => ({
       ...prev,
@@ -420,6 +427,10 @@ export default function AdminPanel() {
           </button>
           <button onClick={handleReset} className="px-4 py-2 text-gray-400 hover:text-white transition-colors">
             Reset
+          </button>
+          <button onClick={handleSyncFromFile} className="px-4 py-2 bg-green-700 hover:bg-green-600 rounded-lg flex items-center gap-2 transition-colors" title="Load content from content.json file">
+            <RefreshCw className="w-4 h-4" />
+            Sync
           </button>
           <button
             onClick={handleSave}
