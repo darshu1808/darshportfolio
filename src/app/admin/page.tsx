@@ -269,7 +269,7 @@ export default function AdminPanel() {
     if (file) {
       const reader = new FileReader()
       reader.onload = (e) => {
-        const newItems = [...content[section].items]
+        const newItems = [...(content as any)[section].items]
         newItems[index] = { ...newItems[index], [field]: e.target?.result as string }
         updateField(section, 'items', newItems)
       }
