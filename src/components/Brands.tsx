@@ -45,19 +45,19 @@ export default function Brands() {
   const containerHeight = numRows <= 1 ? 'h-[300px]' : numRows === 2 ? 'h-[450px]' : numRows === 3 ? 'h-[600px]' : 'h-[750px]'
 
   return (
-    <section ref={containerRef} className="relative w-full py-16 md:py-25 px-4 md:px-6 z-10">
+    <section ref={containerRef} className="relative w-full py-12 md:py-16 lg:py-20 px-3 md:px-6 z-10">
       {/* Header - Top Side */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-8 md:mb-12"
+        className="text-center mb-6 md:mb-12"
       >
         <span className="inline-block text-xs font-semibold uppercase tracking-[0.3em] text-white/40 mb-4">
           {content.brands?.tagline || 'Brands'}
         </span>
-        <h2 className="text-2xl md:text-4xl font-bold text-white">
+        <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-white">
           {content.brands?.title || "I've Worked With"}
         </h2>
         <p className="text-white/50 mt-2 md:mt-4 max-w-xl mx-auto text-sm md:text-base">
@@ -66,10 +66,10 @@ export default function Brands() {
       </motion.div>
 
       {/* Perspective Container - Dynamic height based on brand count */}
-      <div className={`perspective-container ${containerHeight} md:h-[800px] flex items-start justify-center pt-2 md:pt-8 px-1 md:px-0`}>
+      <div className={`perspective-container ${containerHeight} md:h-[600px] lg:h-[800px] flex items-start justify-center pt-2 md:pt-4 lg:pt-8 px-1 md:px-0`}>
         <motion.div
           style={{ y, rotateX, rotateY }}
-          className="preserve-3d flex flex-wrap justify-center items-center gap-5 md:gap-8 max-w-5xl w-full"
+          className="preserve-3d flex flex-wrap justify-center items-center gap-3 md:gap-5 lg:gap-8 max-w-5xl w-full"
         >
           {brands.map((brand: any, i: number) => {
             const pos = brandPositions[i]
@@ -90,41 +90,41 @@ export default function Brands() {
                   rotateY: 0,
                   rotateX: 0,
                 }}
-                className="group preserve-3d relative w-28 h-36 md:w-44 md:h-56 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 backdrop-blur-sm flex flex-col items-center justify-center cursor-pointer"
+                className="group preserve-3d relative w-20 h-28 md:w-28 md:h-36 lg:w-44 lg:h-56 rounded-xl md:rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 backdrop-blur-sm flex flex-col items-center justify-center cursor-pointer"
                 style={{
                   transform: `translate3d(${pos.x}rem, ${pos.y}rem, ${pos.z * 50}px) scale(${pos.scale})`,
                 }}
               >
                 {/* Glass Effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 via-transparent to-transparent" />
+                <div className="absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-br from-white/10 via-transparent to-transparent" />
 
                 {/* Glow */}
-                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-accent-purple/40 to-accent-blue/40 blur-xl" />
+                <div className="absolute inset-0 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-r from-accent-purple/40 to-accent-blue/40 blur-xl" />
                 </div>
 
                 {/* Logo */}
-                <div className="relative z-10 w-12 h-12 md:w-20 md:h-20 rounded-lg md:rounded-xl bg-white/10 flex items-center justify-center mb-2 md:mb-3 group-hover:bg-white/20 transition-colors">
+                <div className="relative z-10 w-8 h-8 md:w-12 md:h-12 lg:w-20 lg:h-20 rounded-lg md:rounded-xl bg-white/10 flex items-center justify-center mb-1 md:mb-2 lg:mb-3 group-hover:bg-white/20 transition-colors">
                   {brand.logo ? (
                     <img
                       src={brand.logo}
                       alt={brand.name}
-                      className="w-8 h-8 md:w-14 md:h-14 object-contain"
+                      className="w-6 h-6 md:w-8 md:h-8 lg:w-14 lg:h-14 object-contain"
                     />
                   ) : (
-                    <span className="text-xl md:text-3xl font-bold text-white/60">
+                    <span className="text-lg md:text-xl lg:text-3xl font-bold text-white/60">
                       {brand.name?.charAt(0)}
                     </span>
                   )}
                 </div>
 
                 {/* Name */}
-                <span className="relative z-10 text-xs md:text-base text-white/80 font-medium text-center">
+                <span className="relative z-10 text-[10px] md:text-xs lg:text-base text-white/80 font-medium text-center">
                   {brand.name}
                 </span>
 
                 {/* Reflection */}
-                <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-gradient-to-b from-accent-purple/20 to-transparent blur-xl opacity-50" />
+                <div className="absolute -bottom-16 md:-bottom-20 lg:-bottom-24 left-1/2 -translate-x-1/2 w-3/4 h-12 md:h-14 lg:h-16 bg-gradient-to-b from-accent-purple/20 to-transparent blur-xl opacity-50" />
               </motion.a>
             )
           })}

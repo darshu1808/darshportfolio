@@ -71,34 +71,34 @@ function ContentRow({
 
   const visibleItems = getVisibleItems()
 
-  // Dimensions - Full screen big boxes (smaller on mobile for horizontal)
+  // Dimensions - Responsive sizes for mobile and desktop
   const dims = aspectRatio === 'vertical'
-    ? { containerClass: 'w-[240px] h-[300px]', centerClass: 'w-[300px] h-[375px]', width: 650 }
+    ? { containerClass: 'w-[180px] h-[225px] md:w-[240px] md:h-[300px]', centerClass: 'w-[220px] h-[275px] md:w-[300px] md:h-[375px]', width: 320 }
     : aspectRatio === 'verticalVideo'
-    ? { containerClass: 'w-[240px] h-[427px]', centerClass: 'w-[300px] h-[533px]', width: 650 }
-    : { containerClass: 'w-[240px] h-[135px] md:w-[380px] md:h-[213px]', centerClass: 'w-[300px] h-[169px] md:w-[480px] md:h-[270px]', width: 550 }
+    ? { containerClass: 'w-[160px] h-[284px] md:w-[240px] md:h-[427px]', centerClass: 'w-[200px] h-[356px] md:w-[300px] md:h-[533px]', width: 300 }
+    : { containerClass: 'w-[200px] h-[113px] md:w-[380px] md:h-[213px]', centerClass: 'w-[260px] h-[146px] md:w-[480px] md:h-[270px]', width: 400 }
 
   return (
     <div
       ref={rowRef}
-      className="py-12"
+      className="py-8 md:py-12"
       style={{ opacity: isInView ? 1 : 0.4, transition: 'opacity 0.5s ease' }}
     >
-      <div className={`relative flex items-center justify-center ${aspectRatio?.includes('vertical') ? 'h-[700px] md:h-[700px]' : 'h-[400px] md:h-[600px]'}`}>
+      <div className={`relative flex items-center justify-center ${aspectRatio?.includes('vertical') ? 'h-[450px] md:h-[700px]' : 'h-[300px] md:h-[600px]'}`}>
         {/* Heading above center box */}
-        <div className="absolute left-1/2 -translate-x-1/2 z-40 text-center" style={{ top: aspectRatio === 'verticalVideo' ? '18px' : (aspectRatio === 'vertical' ? '15px' : '25px') }}>
-          <h3 className={`text-2xl md:text-3xl font-medium ${accentColor}`}>{label}</h3>
+        <div className="absolute left-1/2 -translate-x-1/2 z-40 text-center" style={{ top: aspectRatio === 'verticalVideo' ? '12px' : (aspectRatio === 'vertical' ? '10px' : '18px') }}>
+          <h3 className={`text-lg md:text-2xl lg:text-3xl font-medium ${accentColor}`}>{label}</h3>
         </div>
         {/* Prev Button */}
         <button
           onClick={prevSlide}
-          className="absolute left-0 md:left-4 z-50 w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+          className="absolute left-2 md:left-4 z-50 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
         >
-          <ChevronLeft className="w-6 h-6 text-white/70" />
+          <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 text-white/70" />
         </button>
 
         {/* 3 Cards Container */}
-        <div className="relative flex items-center justify-center gap-4" style={{ width: dims.width }}>
+        <div className="relative flex items-center justify-center gap-2 md:gap-4" style={{ width: dims.width }}>
           {visibleItems.map((item: any) => {
             const isCenter = item.position === 0
             const isLeft = item.position === -1
@@ -167,14 +167,14 @@ function ContentRow({
         {/* Next Button */}
         <button
           onClick={nextSlide}
-          className="absolute right-0 md:right-4 z-50 w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+          className="absolute right-2 md:right-4 z-50 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
         >
-          <ChevronRight className="w-6 h-6 text-white/70" />
+          <ChevronRight className="w-4 h-4 md:w-6 md:h-6 text-white/70" />
         </button>
       </div>
 
       {/* Dots */}
-      <div className="flex justify-center gap-1.5 mt-4">
+      <div className="flex justify-center gap-1 md:gap-1.5 mt-3 md:mt-4">
         {items.map((_: any, i: number) => (
           <button
             key={i}

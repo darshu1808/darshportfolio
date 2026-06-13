@@ -39,7 +39,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section ref={heroRef} className="relative w-full h-screen overflow-hidden bg-dark">
+    <section ref={heroRef} className="relative w-full min-h-screen overflow-hidden bg-dark">
 
       {/* Animated Gradient Mesh Background */}
       <div className="absolute inset-0">
@@ -63,18 +63,18 @@ export default function Hero() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-6">
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 md:px-6">
 
         {/* Top Tag */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-8"
+          className="mb-6 md:mb-8"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full">
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full">
             <span className="w-2 h-2 bg-accent-blue rounded-full animate-pulse" />
-            <span className="text-sm text-white/70 tracking-wide">{content.hero.tagline}</span>
+            <span className="text-xs md:text-sm text-white/70 tracking-wide">{content.hero.tagline}</span>
           </span>
         </motion.div>
 
@@ -83,7 +83,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-center mb-6 tracking-tight"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-display font-bold text-center mb-4 md:mb-6 tracking-tight px-2"
         >
           <span className="text-white">{content.hero.title.line1}</span>{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-blue via-accent-purple to-white">{content.hero.title.line2}</span>{' '}
@@ -95,7 +95,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className="text-lg md:text-xl text-white/50 text-center max-w-2xl mb-12 font-light"
+          className="text-sm md:text-lg lg:text-xl text-white/50 text-center max-w-xl md:max-w-2xl mb-8 md:mb-12 font-light px-4"
         >
           {content.hero.subtitle}
         </motion.p>
@@ -105,11 +105,11 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row items-center gap-4"
+          className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4"
         >
           <a
             href="/projects"
-            className="px-8 py-4 bg-white text-dark rounded-full font-semibold hover:scale-105 transition-transform text-center"
+            className="px-6 md:px-8 py-3 md:py-4 bg-white text-dark rounded-full font-semibold hover:scale-105 transition-transform text-center text-sm md:text-base"
           >
             {content.hero.cta.primary}
           </a>
@@ -120,7 +120,7 @@ export default function Hero() {
                 contactSection.scrollIntoView({ behavior: 'smooth' })
               }
             }}
-            className="px-8 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-white rounded-full font-semibold hover:bg-white/10 transition-all"
+            className="px-6 md:px-8 py-3 md:py-4 bg-white/5 backdrop-blur-md border border-white/10 text-white rounded-full font-semibold hover:bg-white/10 transition-all text-sm md:text-base"
           >
             {content.hero.cta.secondary}
           </button>
@@ -221,12 +221,12 @@ export default function Hero() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-8 md:gap-16"
+        className="absolute bottom-16 md:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 md:gap-16"
       >
         {content.hero.stats.map((stat: any, i: number) => (
-          <div key={i} className="text-center hidden md:block">
-            <div className="text-2xl md:text-3xl font-bold text-white">{stat.value}</div>
-            <div className="text-xs text-white/40 uppercase tracking-wider">{stat.label}</div>
+          <div key={i} className="text-center hidden sm:block">
+            <div className="text-xl md:text-3xl font-bold text-white">{stat.value}</div>
+            <div className="text-[10px] md:text-xs text-white/40 uppercase tracking-wider">{stat.label}</div>
           </div>
         ))}
       </motion.div>

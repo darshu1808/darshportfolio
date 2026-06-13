@@ -3,10 +3,19 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
     @apply bg-dark text-white font-sans antialiased overflow-x-hidden;
+    max-width: 100vw;
   }
-  
+
+  * {
+    @apply max-w-full;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
   }
