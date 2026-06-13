@@ -43,10 +43,6 @@
   .animate-light-streak {
     animation: light-streak 4s ease-in-out infinite;
   }
-
-  .animate-marquee-fast {
-    animation: marquee 15s linear infinite;
-  }
 }
 
 @keyframes pulse-slow {

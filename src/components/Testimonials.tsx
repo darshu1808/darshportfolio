@@ -15,7 +15,7 @@ export default function Testimonials() {
   const allTestimonials = [...testimonials, ...testimonials, ...testimonials]
 
   return (
-    <section className="relative w-full py-12 md:py-32 lg:py-40 z-10 overflow-hidden">
+    <section className="relative w-full py-20 md:py-32 lg:py-40 z-10 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
@@ -28,12 +28,12 @@ export default function Testimonials() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="text-center mb-8 md:mb-20 px-4 md:px-6"
+        className="text-center mb-12 md:mb-20 px-4 md:px-6"
       >
         <span className="inline-block text-xs font-semibold uppercase tracking-[0.3em] text-accent-blue mb-4">
           {content.testimonials?.tagline || 'Testimonials'}
         </span>
-        <h2 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
           Client{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-blue via-accent-purple to-white">
             Success
@@ -43,7 +43,7 @@ export default function Testimonials() {
 
       {/* Infinite scroll testimonials */}
       <div className="relative w-full overflow-hidden">
-        <div className="flex gap-4 md:gap-6 w-max animate-marquee-fast">
+        <div className="flex gap-4 md:gap-6 w-max animate-[marquee_30s_linear_infinite]">
           {allTestimonials.map((t: any, i: number) => (
             <motion.div
               key={i}

@@ -19,7 +19,7 @@ export default function Contact({ id }: ContactProps) {
   }
 
   return (
-    <section id={id} className="relative w-full min-h-screen flex flex-col items-center justify-center z-10 px-4 md:px-6 py-16 md:py-32 lg:py-40 overflow-hidden">
+    <section id={id} className="relative w-full min-h-screen flex flex-col items-center justify-center z-10 px-4 md:px-6 py-20 md:py-32 lg:py-40 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-blue/5 rounded-full blur-[120px]" />
