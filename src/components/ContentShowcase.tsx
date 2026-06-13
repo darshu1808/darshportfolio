@@ -204,7 +204,7 @@ export default function ContentShowcase() {
   if (!hasContent) return null
 
   return (
-    <section className="relative w-full py-16 px-3 md:px-4 z-10 overflow-hidden">
+    <section className="relative w-full py-8 md:py-16 px-3 md:px-4 z-10 overflow-hidden">
       <div className="absolute inset-0 bg-dark" />
       <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
 

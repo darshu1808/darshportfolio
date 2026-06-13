@@ -39,7 +39,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section ref={heroRef} className="relative w-full min-h-screen overflow-hidden bg-dark">
+    <section ref={heroRef} className="relative w-full min-h-[calc(100vh-60px)] overflow-hidden bg-dark">
 
       {/* Animated Gradient Mesh Background */}
       <div className="absolute inset-0">

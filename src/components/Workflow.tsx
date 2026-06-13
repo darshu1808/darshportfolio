@@ -14,7 +14,7 @@ const steps = [
 
 export default function Workflow() {
   return (
-    <section className="relative w-full py-20 md:py-32 lg:py-40 px-4 md:px-6 z-10 overflow-hidden">
+    <section className="relative w-full py-12 md:py-32 lg:py-40 px-4 md:px-6 z-10 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />

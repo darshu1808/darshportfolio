@@ -12,7 +12,7 @@ export default function Skills() {
   }
 
   return (
-    <section className="relative w-full py-20 md:py-32 lg:py-40 px-4 md:px-6 z-10 overflow-hidden">
+    <section className="relative w-full py-12 md:py-32 lg:py-40 px-4 md:px-6 z-10 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-dark" />
       <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />

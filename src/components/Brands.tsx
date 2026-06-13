@@ -45,7 +45,7 @@ export default function Brands() {
   const containerHeight = numRows <= 1 ? 'h-[300px]' : numRows === 2 ? 'h-[450px]' : numRows === 3 ? 'h-[600px]' : 'h-[750px]'
 
   return (
-    <section ref={containerRef} className="relative w-full py-12 md:py-16 lg:py-20 px-3 md:px-6 z-10">
+    <section ref={containerRef} className="relative w-full py-8 md:py-16 lg:py-20 px-3 md:px-6 z-10">
       {/* Header - Top Side */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

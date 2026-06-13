@@ -44,7 +44,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="relative w-full py-20 md:py-32 lg:py-40 px-4 md:px-6 z-10 overflow-hidden">
+    <section className="relative w-full py-12 md:py-32 lg:py-40 px-4 md:px-6 z-10 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-accent-purple/5 rounded-full blur-[150px]" />
