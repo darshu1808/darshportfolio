@@ -17,19 +17,20 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Always start with default content to prevent crash
+    setContent(defaultContent)
+
     try {
       const savedContent = localStorage.getItem('portfolioContent')
-      if (savedContent) {
+      if (savedContent && typeof savedContent === 'string') {
         const parsed = JSON.parse(savedContent)
-        // Use saved content from localStorage (user's uploaded content)
-        setContent(parsed)
-      } else {
-        // No localStorage - use content.json
-        setContent(defaultContent)
+        // Validate it has the expected structure (hero section)
+        if (parsed && typeof parsed === 'object' && parsed.hero && parsed.hero.title) {
+          setContent(parsed)
+        }
       }
     } catch (e) {
-      console.error('Error loading content:', e)
-      setContent(defaultContent)
+      console.error('Error loading saved content:', e)
     }
     setLoading(false)
   }, [])
