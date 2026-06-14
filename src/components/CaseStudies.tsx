@@ -18,31 +18,34 @@ export default function CaseStudies() {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const panels = gsap.utils.toArray('.case-panel')
-      gsap.to(panels, {
-        xPercent: -100 * (panels.length - 1),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1
-        }
-      })
-    }, containerRef)
-    return () => ctx.revert()
+    // Only enable horizontal scroll animation on desktop
+    if (typeof window !== 'undefined' && window.innerWidth >= 768) {
+      const ctx = gsap.context(() => {
+        const panels = gsap.utils.toArray('.case-panel')
+        gsap.to(panels, {
+          xPercent: -100 * (panels.length - 1),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 1
+          }
+        })
+      }, containerRef)
+      return () => ctx.revert()
+    }
   }, [])
 
   return (
-    <section ref={containerRef} className="relative w-full h-[300vh] md:h-[250vh] bg-dark z-10 overflow-hidden">
+    <section ref={containerRef} className="relative w-full md:h-[300vh] lg:h-[250vh] bg-dark z-10 overflow-hidden">
       <div className="sticky top-0 h-screen overflow-hidden pt-16 md:pt-20 lg:pt-32 flex flex-col">
         {/* Responsive Heading */}
         <div className="absolute top-16 md:top-20 left-4 md:left-10 z-20 w-full">
           <h2 className="text-2xl md:text-4xl lg:text-6xl font-display font-bold">Case <span className="neon-text">Studies</span></h2>
         </div>
 
-        <div ref={scrollRef} className="flex h-full w-[300vw] mt-20 md:mt-0">
+        <div ref={scrollRef} className="flex h-full w-full md:w-[300vw] mt-20 md:mt-0">
         {projects.map((project, i) => (
           <div key={i} className="case-panel w-screen h-full flex items-center justify-center p-2 md:p-6">
             <div className="w-full max-w-5xl glass-panel p-4 md:p-8 lg:p-10 flex flex-col md:flex-row gap-4 md:gap-8 lg:gap-10">

@@ -21,7 +21,7 @@ export default function Home() {
       <CustomCursor />
       <GlobalCanvas />
       <Navigation />
-      <main className="relative w-full flex flex-col min-h-screen z-10">
+      <main className="relative w-full flex flex-col min-h-screen z-10 overflow-x-hidden">
         <Hero />
         <About />
         <Services />
