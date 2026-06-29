@@ -1,6 +1,5 @@
 'use client'
 import React from 'react'
-import { ReactLenis } from '@studio-freight/react-lenis'
 import GlobalCanvas from '../components/GlobalCanvas'
 import Navigation from '../components/Navigation'
 import Brands from '../components/Brands'
@@ -17,7 +16,7 @@ import CustomCursor from '../components/CustomCursor'
 
 export default function Home() {
   return (
-    <ReactLenis root options={{ lerp: 0.05, smoothWheel: true }}>
+    <>
       <CustomCursor />
       <GlobalCanvas />
       <Navigation />
@@ -33,6 +32,6 @@ export default function Home() {
         <Skills />
         <Contact id="contact" />
       </main>
-    </ReactLenis>
+    </>
   )
 }
