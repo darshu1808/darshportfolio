@@ -45,10 +45,11 @@ const services = [
 export default function Services() {
   return (
     <section className="relative w-full py-20 md:py-32 lg:py-40 px-4 md:px-6 z-10 overflow-hidden">
-      {/* Background */}
+      {/* Enhanced Background */}
+      <div className="absolute inset-0 gradient-mesh" />
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-accent-purple/5 rounded-full blur-[150px]" />
-        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-accent-blue/5 rounded-full blur-[150px]" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
       </div>
 
       <div className="max-w-7xl mx-auto relative">
@@ -84,13 +85,13 @@ export default function Services() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500"
+              className="group relative p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500 card-lift"
             >
               {/* Hover gradient effect */}
               <div
                 className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{
-                  background: `linear-gradient(135deg, ${service.color}10 0%, transparent 50%)`
+                  background: `linear-gradient(135deg, ${service.color}08 0%, transparent 50%)`
                 }}
               />
 
@@ -98,8 +99,8 @@ export default function Services() {
               <div
                 className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-4 md:mb-6 transition-transform group-hover:scale-110"
                 style={{
-                  background: `linear-gradient(135deg, ${service.color}20 0%, ${service.color}10 100%)`,
-                  border: `1px solid ${service.color}30`
+                  background: `linear-gradient(135deg, ${service.color}20 0%, ${service.color}08 100%)`,
+                  border: `1px solid ${service.color}20`
                 }}
               >
                 <service.icon className="w-6 h-6 md:w-7 md:h-7" style={{ color: service.color }} />
@@ -123,7 +124,7 @@ export default function Services() {
               <div
                 className="absolute top-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{
-                  background: `linear-gradient(135deg, transparent 50%, ${service.color}10 50%)`
+                  background: `linear-gradient(135deg, transparent 50%, ${service.color}08 50%)`
                 }}
               />
             </motion.div>

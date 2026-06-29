@@ -7,6 +7,12 @@ export default function About() {
 
   return (
     <section className="relative w-full py-20 md:py-32 lg:py-40 px-4 md:px-6 z-10">
+      {/* Background */}
+      <div className="absolute inset-0 gradient-mesh" />
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+      </div>
+
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left - Profile */}
@@ -50,7 +56,7 @@ export default function About() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-3 md:gap-6 mb-8 md:mb-10">
               {content.about.stats.map((stat: any, i: number) => (
-                <div key={i} className="text-center p-3 md:p-4 rounded-2xl bg-white/5 border border-white/10">
+                <div key={i} className="text-center p-3 md:p-4 rounded-2xl bg-white/[0.03] border border-white/8 hover:border-white/15 transition-all duration-300 card-lift">
                   <div className="text-xl md:text-3xl font-bold text-white mb-1">{stat.value}</div>
                   <div className="text-[10px] md:text-xs text-white/40 uppercase tracking-wider">{stat.label}</div>
                 </div>
@@ -60,7 +66,7 @@ export default function About() {
             {/* Skills */}
             <div className="flex flex-wrap gap-2 md:gap-3">
               {content.about.skills.map((skill: string, i: number) => (
-                <span key={i} className="px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-white/5 border border-white/10 text-xs md:text-sm text-white/70">
+                <span key={i} className="px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-white/[0.03] border border-white/8 text-xs md:text-sm text-white/70 hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300">
                   {skill}
                 </span>
               ))}

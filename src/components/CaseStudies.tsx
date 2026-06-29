@@ -37,6 +37,7 @@ export default function CaseStudies() {
   return (
     <section className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-6 z-10 overflow-hidden">
       {/* Background */}
+      <div className="absolute inset-0 gradient-mesh" />
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
@@ -75,7 +76,7 @@ export default function CaseStudies() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative rounded-2xl md:rounded-3xl bg-white/[0.02] border border-white/5 overflow-hidden hover:border-white/10 transition-all duration-500"
+              className="group relative rounded-2xl md:rounded-3xl bg-white/[0.02] border border-white/5 overflow-hidden hover:border-white/10 transition-all duration-500 card-lift"
             >
               {/* Gradient overlay on hover */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent-purple/5 to-accent-blue/5" />
@@ -118,7 +119,7 @@ export default function CaseStudies() {
                       <p className="text-sm md:text-base font-semibold text-white">{project.results}</p>
                     </div>
                     {/* Metric Circle */}
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-accent-purple to-accent-blue flex items-center justify-center">
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-accent-purple to-accent-blue flex items-center justify-center shadow-lg">
                       <span className="text-xs md:text-sm font-bold text-white">{project.metric}</span>
                     </div>
                   </div>

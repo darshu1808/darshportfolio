@@ -21,6 +21,7 @@ export default function Contact({ id }: ContactProps) {
   return (
     <section id={id} className="relative w-full min-h-screen flex flex-col items-center justify-center z-10 px-4 md:px-6 py-20 md:py-32 lg:py-40 overflow-hidden">
       {/* Background */}
+      <div className="absolute inset-0 gradient-mesh" />
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-blue/5 rounded-full blur-[120px]" />
         <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-accent-purple/5 rounded-full blur-[100px]" />
@@ -89,7 +90,7 @@ export default function Contact({ id }: ContactProps) {
 
             <button
               type="button"
-              className="w-full py-3 md:py-4 rounded-2xl bg-gradient-to-r from-accent-blue via-accent-purple to-accent-blue bg-size-200 hover:bg-right transition-all duration-500 flex items-center justify-center gap-3 group"
+              className="w-full py-3 md:py-4 rounded-2xl bg-gradient-to-r from-accent-blue via-accent-purple to-accent-blue bg-size-200 hover:bg-right transition-all duration-500 flex items-center justify-center gap-3 group card-lift"
             >
               <span className="font-semibold text-white">Send Message</span>
               <Send className="w-4 h-4 md:w-5 md:h-5 text-white group-hover:translate-x-1 transition-transform" />
@@ -115,7 +116,7 @@ export default function Contact({ id }: ContactProps) {
                 href={social.url || '#'}
                 target={social.url?.startsWith('http') ? '_blank' : '_self'}
                 rel={social.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center hover:border-white/20 hover:scale-110 transition-all duration-300 group"
+                className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center hover:border-white/20 hover:scale-110 transition-all duration-300 group card-lift"
                 title={social.label}
               >
                 <IconComponent className="w-4 h-4 md:w-5 md:h-5 text-white/50 group-hover:text-white transition-colors" />

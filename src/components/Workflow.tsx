@@ -16,6 +16,7 @@ export default function Workflow() {
   return (
     <section className="relative w-full py-20 md:py-32 lg:py-40 px-4 md:px-6 z-10 overflow-hidden">
       {/* Background */}
+      <div className="absolute inset-0 gradient-mesh" />
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
@@ -57,9 +58,9 @@ export default function Workflow() {
               className="relative"
             >
               {/* Card */}
-              <div className="p-4 md:p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500 group text-center">
+              <div className="p-4 md:p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500 group text-center card-lift">
                 {/* Step number */}
-                <div className="absolute -top-2 -left-2 w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center text-[10px] md:text-xs font-bold text-white">
+                <div className="absolute -top-2 -left-2 w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center text-[10px] md:text-xs font-bold text-white shadow-lg">
                   {i + 1}
                 </div>
 

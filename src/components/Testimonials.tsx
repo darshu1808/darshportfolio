@@ -17,6 +17,7 @@ export default function Testimonials() {
   return (
     <section className="relative w-full py-20 md:py-32 lg:py-40 z-10 overflow-hidden">
       {/* Background */}
+      <div className="absolute inset-0 gradient-mesh" />
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
@@ -50,7 +51,7 @@ export default function Testimonials() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="w-[300px] md:w-[380px] shrink-0 p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500 group"
+              className="w-[300px] md:w-[380px] shrink-0 p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500 group card-lift"
             >
               {/* Quote icon */}
               <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br ${t.gradient || 'from-[#00C2FF] to-[#6D5EF3]'} flex items-center justify-center mb-4 md:mb-6 opacity-80 group-hover:opacity-100 transition-opacity`}>

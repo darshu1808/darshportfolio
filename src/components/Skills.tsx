@@ -16,6 +16,7 @@ export default function Skills() {
       {/* Background */}
       <div className="absolute inset-0 bg-dark" />
       <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      <div className="absolute inset-0 gradient-mesh opacity-50" />
 
       <div className="max-w-4xl mx-auto relative">
         {/* Header */}
@@ -54,15 +55,24 @@ export default function Skills() {
                 <span className="text-white font-display font-medium text-sm md:text-base">{skill.name}</span>
                 <span className="text-white/60 font-display text-xs md:text-sm">{skill.value}%</span>
               </div>
-              <div className="h-1.5 md:h-2 bg-white/10 rounded-full overflow-hidden">
+              <div className="h-1.5 md:h-2 bg-white/5 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   whileInView={{ width: `${skill.value}%` }}
                   viewport={{ once: true }}
                   transition={{ duration: 1, delay: index * 0.1 }}
-                  className="h-full rounded-full"
+                  className="h-full rounded-full relative"
                   style={{ backgroundColor: skill.color || '#00C2FF' }}
-                />
+                >
+                  {/* Glow effect on progress bar */}
+                  <div
+                    className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full"
+                    style={{
+                      backgroundColor: skill.color || '#00C2FF',
+                      boxShadow: `0 0 10px ${skill.color || '#00C2FF'}`
+                    }}
+                  />
+                </motion.div>
               </div>
             </motion.div>
           ))}
