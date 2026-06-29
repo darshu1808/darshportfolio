@@ -206,29 +206,53 @@
   },
   "timeline": {
     "tagline": "Journey",
-    "title": "My Timeline",
+    "title": "",
     "description": "A chronological journey through my education and professional experience.",
     "items": [
       {
+        "year": "2023",
+        "type": "education",
+        "title": "Beginning IT in Diploma ",
+        "subtitle": "Dr. S & SS Gandhi Gov. Eng.",
+        "description": "Started my higher education in diploma IT with subject of digital marketing"
+      },
+      {
         "year": "2024",
         "type": "job",
-        "title": "Digital Marketing Lead",
-        "subtitle": "TechNova Inc.",
-        "description": "Leading digital marketing strategies for tech startups."
+        "title": "Digital Marketing Intern",
+        "subtitle": "Aaziko LLP [Part - Time]",
+        "description": "Learn about SEO, Paid Ads, Social media marketing, SEM etc."
       },
       {
-        "year": "2022",
+        "year": "2024",
         "type": "job",
-        "title": "Social Media Manager",
-        "subtitle": "Aura Lifestyle",
-        "description": "Managed social media presence for fashion brand."
+        "title": "Digital Marketing Intern executive",
+        "subtitle": "Aaziko LLP & CGP Insurance [Part - Time]",
+        "description": "Started with two brother company as digital marketing executive"
       },
       {
-        "year": "2020",
+        "year": "2025",
+        "type": "job",
+        "title": "Ad manger & Social media strategist",
+        "subtitle": "DWK IT ",
+        "description": "Worked as ad manager & social media strategist",
+        "id": "1782756215149"
+      },
+      {
+        "year": "2026",
         "type": "education",
-        "title": "Digital Marketing Certification",
-        "subtitle": "Google & Meta",
-        "description": "Certified in Google Ads and Meta Marketing."
+        "title": "Competed IT in Diploma ",
+        "subtitle": "Dr. S & SS Gandhi Gov. Eng.",
+        "description": "Completed my IT Diploma with internship and gain 1.5 years of experience in digital marketing industry",
+        "id": "1782756402503"
+      },
+      {
+        "year": "2026",
+        "type": "job",
+        "title": "Brand Manger",
+        "subtitle": "Frameinn Media",
+        "description": "Handel 8+ brands and delivered satisfying result to clients in different niches",
+        "id": "1782756548727"
       }
     ]
   },
