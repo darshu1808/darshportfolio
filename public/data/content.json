@@ -201,6 +201,16 @@
       }
     ]
   },
+  "timeline": {
+    "tagline": "Journey",
+    "title": "My Timeline",
+    "description": "A chronological journey through my education and professional experience.",
+    "items": [
+      { "year": "2024", "type": "job", "title": "Digital Marketing Lead", "subtitle": "TechNova Inc.", "description": "Leading digital marketing strategies for tech startups." },
+      { "year": "2022", "type": "job", "title": "Social Media Manager", "subtitle": "Aura Lifestyle", "description": "Managed social media presence for fashion brand." },
+      { "year": "2020", "type": "education", "title": "Digital Marketing Certification", "subtitle": "Google & Meta", "description": "Certified in Google Ads and Meta Marketing." }
+    ]
+  },
   "contact": {
     "tagline": "Contact",
     "title": "Let's build something extraordinary",
