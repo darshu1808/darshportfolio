@@ -168,6 +168,79 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState('content')
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [password, setPassword] = useState('')
+  const [authError, setAuthError] = useState('')
+
+  // Password protection - change this to your desired password
+  const ADMIN_PASSWORD = 'Darsh@1808'
+
+  // Check for existing session
+  useEffect(() => {
+    const adminSession = localStorage.getItem('adminSession')
+    if (adminSession === 'authenticated') {
+      setIsAuthenticated(true)
+    }
+  }, [])
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (password === ADMIN_PASSWORD) {
+      setIsAuthenticated(true)
+      localStorage.setItem('adminSession', 'authenticated')
+      setAuthError('')
+    } else {
+      setAuthError('Incorrect password')
+    }
+  }
+
+  const handleLogout = () => {
+    setIsAuthenticated(false)
+    localStorage.removeItem('adminSession')
+    setPassword('')
+  }
+
+  // Login screen
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Settings className="w-8 h-8 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-white">Portfolio Admin</h1>
+              <p className="text-gray-400 text-sm mt-2">Enter your password to continue</p>
+            </div>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:border-purple-500"
+                />
+              </div>
+              {authError && (
+                <p className="text-red-400 text-sm text-center">{authError}</p>
+              )}
+              <button
+                type="submit"
+                className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg text-white font-semibold transition-all"
+              >
+                Login
+              </button>
+            </form>
+            <div className="mt-6 text-center">
+              <a href="/" className="text-gray-400 text-sm hover:text-white">← Back to Site</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   useEffect(() => {
     const savedContent = localStorage.getItem('portfolioContent')
@@ -489,6 +562,12 @@ export default function AdminPanel() {
             <Eye className="w-4 h-4" />
             View Site
           </a>
+          <button onClick={handleLogout} className="px-4 py-2 bg-red-600/80 hover:bg-red-600 rounded-lg flex items-center gap-2 transition-colors" title="Logout">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Logout
+          </button>
         </div>
       </header>
 
