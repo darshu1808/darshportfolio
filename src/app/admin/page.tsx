@@ -1,7 +1,7 @@
 'use client'
 // Admin Panel - Content Management System
 import React, { useState, useEffect, useRef } from 'react'
-import { Save, Eye, Plus, Trash2, Upload, X, Image, Video, Settings, Briefcase, Building, Layers, Palette, FileText, Link, Copy, RefreshCw, Loader2, Volume2, VolumeX, FolderOpen, Lock, Loader } from 'lucide-react'
+import { Save, Eye, Plus, Trash2, Upload, X, Image, Video, Settings, Briefcase, Building, Layers, Palette, FileText, Link, Copy, RefreshCw, Loader2, Volume2, VolumeX, FolderOpen, Lock, Loader, Calendar } from 'lucide-react'
 
 const CLOUDINARY_CLOUD_NAME = 'dgkyqmres'
 
@@ -98,6 +98,16 @@ const defaultContent = {
       { icon: "Video", label: "Production", desc: "Content creation" },
       { icon: "Rocket", label: "Launch", desc: "Going live" },
       { icon: "BarChart3", label: "Optimize", desc: "Scaling results" }
+    ]
+  },
+  timeline: {
+    tagline: "Journey",
+    title: "My Timeline",
+    description: "A chronological journey through my education and professional experience.",
+    items: [
+      { year: "2024", type: "job", title: "Digital Marketing Lead", subtitle: "TechNova Inc.", description: "Leading digital marketing strategies for tech startups." },
+      { year: "2022", type: "job", title: "Social Media Manager", subtitle: "Aura Lifestyle", description: "Managed social media presence for fashion brand." },
+      { year: "2020", type: "education", title: "Digital Marketing Certification", subtitle: "Google & Meta", description: "Certified in Google Ads and Meta Marketing." }
     ]
   },
   contact: {
@@ -524,6 +534,7 @@ export default function AdminPanel() {
     { id: 'skills', label: 'Skills', icon: Palette },
     { id: 'testimonials', label: 'Testimonials', icon: Copy },
     { id: 'workflow', label: 'Workflow', icon: RefreshCw },
+    { id: 'timeline', label: 'Timeline', icon: Calendar },
     { id: 'contact', label: 'Contact', icon: Link },
     { id: 'projects', label: 'Projects', icon: Image },
     { id: 'brands', label: 'Brands', icon: Building },
@@ -910,6 +921,67 @@ export default function AdminPanel() {
                     <input type="text" value={step.label} onChange={(e) => { const newSteps = [...content.workflow.steps]; newSteps[i].label = e.target.value; updateField('workflow', 'steps', newSteps) }} className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Label" />
                     <input type="text" value={step.desc} onChange={(e) => { const newSteps = [...content.workflow.steps]; newSteps[i].desc = e.target.value; updateField('workflow', 'steps', newSteps) }} className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Description" />
                     <button onClick={() => removeItem('workflow', i)} className="text-red-400 hover:text-red-300"><Trash2 className="w-4 h-4" /></button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Timeline Section */}
+          {activeTab === 'content' && activeSection === 'timeline' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                  <Calendar className="w-6 h-6" />
+                  Timeline Section
+                </h2>
+                <button onClick={() => addItem('timeline', { year: "2024", type: "job", title: "New Position", subtitle: "Company Name", description: "Description of your role" })} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-2">
+                  <Plus className="w-4 h-4" /> Add Timeline Item
+                </button>
+              </div>
+
+              {/* Header Fields */}
+              <div className="grid gap-4">
+                <label className="block">
+                  <span className="text-sm text-gray-400">Tagline</span>
+                  <input type="text" value={content.timeline?.tagline || ''} onChange={(e) => updateField('timeline', 'tagline', e.target.value)} className="w-full mt-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-blue-500 focus:outline-none" />
+                </label>
+                <label className="block">
+                  <span className="text-sm text-gray-400">Title</span>
+                  <input type="text" value={content.timeline?.title || ''} onChange={(e) => updateField('timeline', 'title', e.target.value)} className="w-full mt-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-blue-500 focus:outline-none" />
+                </label>
+                <label className="block">
+                  <span className="text-sm text-gray-400">Description</span>
+                  <textarea value={content.timeline?.description || ''} onChange={(e) => updateField('timeline', 'description', e.target.value)} rows={2} className="w-full mt-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-blue-500 focus:outline-none" />
+                </label>
+              </div>
+
+              {/* Timeline Items */}
+              <div className="grid gap-4">
+                {(content.timeline?.items || []).map((item: any, i: number) => (
+                  <div key={i} className="bg-gray-800 p-6 rounded-lg">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="font-semibold">Timeline Item {i + 1}</span>
+                      <div className="flex items-center gap-3">
+                        <select
+                          value={item.type}
+                          onChange={(e) => { const newItems = [...(content.timeline?.items || [])]; newItems[i].type = e.target.value; updateField('timeline', 'items', newItems) }}
+                          className="px-3 py-1 bg-gray-700 border border-gray-600 rounded-lg text-sm"
+                        >
+                          <option value="job">Job</option>
+                          <option value="education">Education</option>
+                        </select>
+                        <button onClick={() => removeItem('timeline', i)} className="text-red-400 hover:text-red-300"><Trash2 className="w-4 h-4" /></button>
+                      </div>
+                    </div>
+                    <div className="grid gap-3">
+                      <div className="flex gap-3">
+                        <input type="text" value={item.year} onChange={(e) => { const newItems = [...(content.timeline?.items || [])]; newItems[i].year = e.target.value; updateField('timeline', 'items', newItems) }} className="w-24 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Year" />
+                        <input type="text" value={item.title} onChange={(e) => { const newItems = [...(content.timeline?.items || [])]; newItems[i].title = e.target.value; updateField('timeline', 'items', newItems) }} className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Title" />
+                      </div>
+                      <input type="text" value={item.subtitle} onChange={(e) => { const newItems = [...(content.timeline?.items || [])]; newItems[i].subtitle = e.target.value; updateField('timeline', 'items', newItems) }} className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Subtitle (Company/School)" />
+                      <textarea value={item.description} onChange={(e) => { const newItems = [...(content.timeline?.items || [])]; newItems[i].description = e.target.value; updateField('timeline', 'items', newItems) }} rows={2} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Description" />
+                    </div>
                   </div>
                 ))}
               </div>
