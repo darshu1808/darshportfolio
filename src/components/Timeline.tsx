@@ -48,7 +48,7 @@ export default function Timeline() {
         {/* Timeline */}
         <div className="relative">
           {/* Vertical Line */}
-          <div className="absolute left-[21px] md:left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2">
+          <div className="absolute left-[16px] md:left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2">
             <div className="w-full h-full bg-gradient-to-b from-accent-purple via-accent-blue to-accent-purple opacity-30" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-accent-purple shadow-lg shadow-accent-purple/50" />
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-accent-blue shadow-lg shadow-accent-blue/50" />
