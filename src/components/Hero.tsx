@@ -39,7 +39,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section ref={heroRef} className="relative w-full min-h-screen overflow-hidden bg-dark">
+    <section ref={heroRef} className="relative w-full min-h-screen min-h-[100dvh] overflow-hidden bg-dark">
 
       {/* Animated Gradient Mesh Background */}
       <div className="absolute inset-0">
@@ -62,8 +62,8 @@ export default function Hero() {
         <div className="absolute top-2/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent-purple/20 to-transparent animate-light-streak delay-700" />
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 md:px-6">
+      {/* Main Content - Vertically Centered */}
+      <div className="relative z-10 w-full h-screen min-h-[600px] flex flex-col items-center justify-center px-4 md:px-8 lg:px-24">
 
         {/* Top Tag */}
         <motion.div
@@ -83,7 +83,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-display font-bold text-center mb-4 md:mb-6 tracking-tight px-2"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-center mb-4 md:mb-6 tracking-tight px-2"
         >
           <span className="text-white">{content.hero.title.line1}</span>{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-blue via-accent-purple to-white">{content.hero.title.line2}</span>{' '}
@@ -127,10 +127,10 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Floating Analytics Cards - Left */}
+      {/* Floating Analytics Cards - Left - PC Only */}
       <motion.div
         style={{ y: y1 }}
-        className="absolute left-8 md:left-16 top-1/2 -translate-y-1/2 hidden lg:block floating-card"
+        className="absolute left-4 md:left-8 lg:left-16 top-1/2 -translate-y-1/2 hidden lg:block floating-card"
         data-depth="0.3"
       >
         <div className="glass-card p-5 w-56">
@@ -151,10 +151,10 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Floating Analytics Card - Right */}
+      {/* Floating Analytics Card - Right - PC Only */}
       <motion.div
         style={{ y: y2 }}
-        className="absolute right-8 md:right-16 top-1/3 hidden lg:block floating-card"
+        className="absolute right-4 md:right-8 lg:right-16 top-1/3 hidden lg:block floating-card"
         data-depth="0.4"
       >
         <div className="glass-card p-5 w-52">
@@ -184,10 +184,10 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Floating AI Card - Bottom Right */}
+      {/* Floating AI Card - Bottom Right - PC Only */}
       <motion.div
         style={{ y: y3 }}
-        className="absolute right-16 bottom-32 hidden lg:block floating-card"
+        className="absolute right-8 lg:right-16 bottom-32 hidden lg:block floating-card"
         data-depth="0.25"
       >
         <div className="glass-card p-4 w-48">
