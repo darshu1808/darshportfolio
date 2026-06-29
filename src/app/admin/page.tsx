@@ -169,6 +169,7 @@ export default function AdminPanel() {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
   const [password, setPassword] = useState('')
   const [authError, setAuthError] = useState('')
 
@@ -177,10 +178,13 @@ export default function AdminPanel() {
 
   // Check for existing session
   useEffect(() => {
-    const adminSession = localStorage.getItem('adminSession')
-    if (adminSession === 'authenticated') {
-      setIsAuthenticated(true)
+    if (typeof window !== 'undefined') {
+      const adminSession = localStorage.getItem('adminSession')
+      if (adminSession === 'authenticated') {
+        setIsAuthenticated(true)
+      }
     }
+    setIsLoaded(true)
   }, [])
 
   const handleLogin = (e: React.FormEvent) => {
@@ -201,6 +205,15 @@ export default function AdminPanel() {
   }
 
   // Login screen
+  // Show loading while checking session
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+      </div>
+    )
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
