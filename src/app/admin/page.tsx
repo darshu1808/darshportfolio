@@ -1,7 +1,7 @@
 'use client'
 // Admin Panel - Content Management System
 import React, { useState, useEffect, useRef } from 'react'
-import { Save, Eye, Plus, Trash2, Upload, X, Image, Video, Settings, Briefcase, Building, Layers, Palette, FileText, Link, Copy, RefreshCw, Loader2, Volume2, VolumeX } from 'lucide-react'
+import { Save, Eye, Plus, Trash2, Upload, X, Image, Video, Settings, Briefcase, Building, Layers, Palette, FileText, Link, Copy, RefreshCw, Loader2, Volume2, VolumeX, FolderOpen } from 'lucide-react'
 
 const CLOUDINARY_CLOUD_NAME = 'dgkyqmres'
 
@@ -239,6 +239,39 @@ export default function AdminPanel() {
     }
   }
 
+  // Load content from content.json file
+  const handleLoadFromFile = async () => {
+    if (!confirm('Load content from content.json file? This will load all your existing site content into the admin panel. Your local changes will be overwritten!')) {
+      return
+    }
+
+    try {
+      const response = await fetch('/data/content.json')
+      if (!response.ok) {
+        throw new Error('Failed to load content.json')
+      }
+      const fileContent = await response.json()
+
+      // Merge with default content structure to ensure all fields exist
+      const mergedContent = {
+        ...defaultContent,
+        ...fileContent,
+        brands: fileContent.brands || defaultContent.brands,
+        media: fileContent.media || defaultContent.media,
+        projects: fileContent.projects || defaultContent.projects,
+        settings: fileContent.settings || defaultContent.settings,
+        contentShowcase: fileContent.contentShowcase || defaultContent.contentShowcase
+      }
+
+      setContent(mergedContent)
+      localStorage.setItem('portfolioContent', JSON.stringify(mergedContent))
+      alert('Content loaded from file successfully!')
+    } catch (error) {
+      console.error('Error loading content:', error)
+      alert('Failed to load content.json. Make sure the file exists in public/data/ folder.')
+    }
+  }
+
   const handleSyncFromFile = () => {
     if (confirm('Sync from content.json? This will reload all content from the file (GitHub version). Save your current work first by clicking Export!')) {
       localStorage.removeItem('portfolioContent')
@@ -439,6 +472,10 @@ export default function AdminPanel() {
           </button>
           <button onClick={handleReset} className="px-4 py-2 text-gray-400 hover:text-white transition-colors">
             Reset
+          </button>
+          <button onClick={handleLoadFromFile} className="px-4 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg flex items-center gap-2 transition-colors" title="Load content from content.json file">
+            <FolderOpen className="w-4 h-4" />
+            Load File
           </button>
           <button onClick={handleSyncFromFile} className="px-4 py-2 bg-green-700 hover:bg-green-600 rounded-lg flex items-center gap-2 transition-colors" title="Load content from content.json file">
             <RefreshCw className="w-4 h-4" />
