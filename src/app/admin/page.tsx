@@ -256,6 +256,8 @@ export default function AdminPanel() {
   }
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+
     const savedContent = localStorage.getItem('portfolioContent')
     if (savedContent) {
       try {
