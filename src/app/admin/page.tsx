@@ -176,14 +176,36 @@ export default function AdminPanel() {
   // Password protection - change this to your desired password
   const ADMIN_PASSWORD = 'Darsh@1808'
 
-  // Check for existing session
+  // Check for existing session AND load content - all in one useEffect
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const adminSession = localStorage.getItem('adminSession')
-      if (adminSession === 'authenticated') {
-        setIsAuthenticated(true)
+    if (typeof window === 'undefined') return
+
+    // Check auth session
+    const adminSession = localStorage.getItem('adminSession')
+    if (adminSession === 'authenticated') {
+      setIsAuthenticated(true)
+    }
+
+    // Load saved content
+    const savedContent = localStorage.getItem('portfolioContent')
+    if (savedContent) {
+      try {
+        const parsed = JSON.parse(savedContent)
+        const complete = {
+          ...defaultContent,
+          ...parsed,
+          brands: parsed.brands || defaultContent.brands,
+          media: parsed.media || defaultContent.media,
+          projects: parsed.projects || defaultContent.projects,
+          settings: parsed.settings || defaultContent.settings,
+          contentShowcase: parsed.contentShowcase || defaultContent.contentShowcase
+        }
+        setContent(complete)
+      } catch (e) {
+        console.error('Error loading saved content:', e)
       }
     }
+
     setIsLoaded(true)
   }, [])
 
@@ -204,7 +226,6 @@ export default function AdminPanel() {
     setPassword('')
   }
 
-  // Login screen
   // Show loading while checking session
   if (!isLoaded) {
     return (
@@ -214,6 +235,7 @@ export default function AdminPanel() {
     )
   }
 
+  // Show login screen if not authenticated
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
@@ -254,30 +276,6 @@ export default function AdminPanel() {
       </div>
     )
   }
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    const savedContent = localStorage.getItem('portfolioContent')
-    if (savedContent) {
-      try {
-        const parsed = JSON.parse(savedContent)
-        // Ensure all sections exist with proper defaults
-        const complete = {
-          ...defaultContent,
-          ...parsed,
-          brands: parsed.brands || defaultContent.brands,
-          media: parsed.media || defaultContent.media,
-          projects: parsed.projects || defaultContent.projects,
-          settings: parsed.settings || defaultContent.settings,
-          contentShowcase: parsed.contentShowcase || defaultContent.contentShowcase
-        }
-        setContent(complete)
-      } catch (e) {
-        console.error('Error loading saved content:', e)
-      }
-    }
-  }, [])
 
   const handleSave = () => {
     try {
