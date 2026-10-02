@@ -175,6 +175,9 @@ export default function AdminPanel() {
   const [content, setContent] = useState(defaultContent)
   const [activeSection, setActiveSection] = useState('hero')
   const [saved, setSaved] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+  const [isPushing, setIsPushing] = useState(false)
+  const [saveMessage, setSaveMessage] = useState('')
   const [activeTab, setActiveTab] = useState('content')
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -287,16 +290,46 @@ export default function AdminPanel() {
     )
   }
 
-  const handleSave = () => {
+  const handleSave = async (pushToGit: boolean = false) => {
     try {
+      if (pushToGit) {
+        setIsPushing(true)
+      } else {
+        setIsSaving(true)
+      }
+
+      // 1. Save to localStorage as browser cache
       localStorage.setItem('portfolioContent', JSON.stringify(content))
+
+      // 2. Write directly to content.json files on disk via API
+      const res = await fetch('/api/save-content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content, pushToGit })
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to save to disk')
+      }
+
       setSaved(true)
+      setSaveMessage(pushToGit ? 'Saved & Pushed!' : 'Saved to File!')
       setTimeout(() => {
         setSaved(false)
-      }, 2000)
-    } catch (e) {
-      alert('Error saving: Content may be too large. Try using smaller video files.')
+        setSaveMessage('')
+      }, 3000)
+
+      if (data.gitWarning) {
+        alert(data.message)
+      }
+    } catch (e: any) {
       console.error('Save error:', e)
+      alert('Error saving directly to file: ' + (e?.message || 'Check terminal'))
+    } finally {
+      setIsSaving(false)
+      setIsPushing(false)
     }
   }
 
@@ -574,13 +607,28 @@ export default function AdminPanel() {
             Sync
           </button>
           <button
-            onClick={handleSave}
+            type="button"
+            disabled={isSaving || isPushing}
+            onClick={() => handleSave(false)}
             className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all ${
-              saved ? 'bg-green-600' : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+              saved && !isPushing ? 'bg-green-600' : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
             }`}
+            title="Writes directly to content.json on your computer"
           >
-            <Save className="w-4 h-4" />
-            {saved ? 'Saved!' : 'Save Changes'}
+            {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            {isSaving ? 'Saving File...' : (saved && !isPushing ? (saveMessage || 'Saved!') : 'Save to File')}
+          </button>
+          <button
+            type="button"
+            disabled={isSaving || isPushing}
+            onClick={() => handleSave(true)}
+            className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all ${
+              isPushing ? 'bg-indigo-700' : saved && isPushing ? 'bg-green-600' : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700'
+            }`}
+            title="Saves to content.json and pushes directly to GitHub"
+          >
+            {isPushing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+            {isPushing ? 'Pushing to GitHub...' : (saved && saveMessage.includes('Pushed') ? 'Pushed!' : 'Save & Push to GitHub')}
           </button>
           <a href="/" target="_blank" className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center gap-2 transition-colors">
             <Eye className="w-4 h-4" />
