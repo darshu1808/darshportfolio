@@ -31,6 +31,10 @@ echo Committing: "%commit_msg%"...
 git commit -m "%commit_msg%"
 
 echo.
+echo Syncing latest changes from GitHub / Vercel...
+git pull --no-edit origin main
+
+echo.
 echo Pushing to GitHub (origin main)...
 git push origin main
 

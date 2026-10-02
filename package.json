@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "push": "git add . && git commit -m \"Update portfolio\" && git push origin main"
+    "push": "git add . && git commit -m \"Update portfolio\" ; git pull --no-edit origin main && git push origin main"
   },
   "dependencies": {
     "@react-three/drei": "^9.106.0",
