@@ -189,7 +189,7 @@ export default function AdminPanel() {
   // Password protection - change this to your desired password
   const ADMIN_PASSWORD = 'Darsh@1808'
 
-  // Check for existing session AND load content - all in one useEffect
+  // Check for existing session AND automatically load latest published content from server
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -199,27 +199,53 @@ export default function AdminPanel() {
       setIsAuthenticated(true)
     }
 
-    // Load saved content
-    const savedContent = localStorage.getItem('portfolioContent')
-    if (savedContent) {
+    // Automatically load the latest content from published content.json
+    const loadLatestContent = async () => {
       try {
-        const parsed = JSON.parse(savedContent)
-        const complete = {
-          ...defaultContent,
-          ...parsed,
-          brands: parsed.brands || defaultContent.brands,
-          media: parsed.media || defaultContent.media,
-          projects: parsed.projects || defaultContent.projects,
-          settings: parsed.settings || defaultContent.settings,
-          contentShowcase: parsed.contentShowcase || defaultContent.contentShowcase
+        const response = await fetch(`/data/content.json?t=${Date.now()}`)
+        if (response.ok) {
+          const fileContent = await response.json()
+          const complete = {
+            ...defaultContent,
+            ...fileContent,
+            brands: fileContent.brands || defaultContent.brands,
+            media: fileContent.media || defaultContent.media,
+            projects: fileContent.projects || defaultContent.projects,
+            settings: fileContent.settings || defaultContent.settings,
+            contentShowcase: fileContent.contentShowcase || defaultContent.contentShowcase
+          }
+          setContent(complete)
+          localStorage.setItem('portfolioContent', JSON.stringify(complete))
+          setIsLoaded(true)
+          return
         }
-        setContent(complete)
       } catch (e) {
-        console.error('Error loading saved content:', e)
+        console.warn('Could not auto-fetch /data/content.json, using local backup:', e)
       }
+
+      // Fallback to localStorage if offline
+      const savedContent = localStorage.getItem('portfolioContent')
+      if (savedContent) {
+        try {
+          const parsed = JSON.parse(savedContent)
+          const complete = {
+            ...defaultContent,
+            ...parsed,
+            brands: parsed.brands || defaultContent.brands,
+            media: parsed.media || defaultContent.media,
+            projects: parsed.projects || defaultContent.projects,
+            settings: parsed.settings || defaultContent.settings,
+            contentShowcase: parsed.contentShowcase || defaultContent.contentShowcase
+          }
+          setContent(complete)
+        } catch (e) {
+          console.error('Error loading fallback content:', e)
+        }
+      }
+      setIsLoaded(true)
     }
 
-    setIsLoaded(true)
+    loadLatestContent()
   }, [])
 
   const handleLogin = (e: React.FormEvent) => {
@@ -582,14 +608,6 @@ export default function AdminPanel() {
           <span className="text-xs bg-gradient-to-r from-blue-600 to-purple-600 px-3 py-1 rounded-full">CMS v2.0</span>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            onClick={handleLoadFromFile}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center gap-2 transition-colors text-sm"
-            title="Load content from content.json file"
-          >
-            <FolderOpen className="w-4 h-4 text-purple-400" />
-            Load File
-          </button>
           <button
             type="button"
             disabled={isPushing}
