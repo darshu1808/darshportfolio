@@ -582,25 +582,13 @@ export default function AdminPanel() {
           <span className="text-xs bg-gradient-to-r from-blue-600 to-purple-600 px-3 py-1 rounded-full">CMS v2.0</span>
         </div>
         <div className="flex items-center gap-3">
-          <label className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center gap-2 cursor-pointer transition-colors">
-            <Upload className="w-4 h-4" />
-            Import
-            <input type="file" accept=".json" onChange={handleImport} className="hidden" />
-          </label>
-          <button onClick={handleExport} className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center gap-2 transition-colors">
-            <Save className="w-4 h-4" />
-            Export
-          </button>
-          <button onClick={handleReset} className="px-4 py-2 text-gray-400 hover:text-white transition-colors">
-            Reset
-          </button>
-          <button onClick={handleLoadFromFile} className="px-4 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg flex items-center gap-2 transition-colors" title="Load content from content.json file">
-            <FolderOpen className="w-4 h-4" />
+          <button
+            onClick={handleLoadFromFile}
+            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center gap-2 transition-colors text-sm"
+            title="Load content from content.json file"
+          >
+            <FolderOpen className="w-4 h-4 text-purple-400" />
             Load File
-          </button>
-          <button onClick={handleSyncFromFile} className="px-4 py-2 bg-green-700 hover:bg-green-600 rounded-lg flex items-center gap-2 transition-colors" title="Load content from content.json file">
-            <RefreshCw className="w-4 h-4" />
-            Sync
           </button>
           <button
             type="button"
