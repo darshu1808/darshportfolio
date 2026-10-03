@@ -411,13 +411,6 @@
     },
     "verticalReels": [
       {
-        "id": "1791033721387r3p7qa8wq",
-        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791033719/njn5z49jcphgem1bisy1.mp4",
-        "type": "video",
-        "caption": "",
-        "muted": false
-      },
-      {
         "id": "1791033734716sv3bdvusy",
         "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791033733/q5owvz3aucotepgbdblj.mp4",
         "type": "video",
@@ -451,6 +444,48 @@
         "type": "video",
         "caption": "",
         "muted": false
+      },
+      {
+        "id": "1791034023234yfd735vu8",
+        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791034021/to2rxeorheprk5x9gkds.mp4",
+        "type": "video",
+        "caption": "",
+        "muted": false
+      },
+      {
+        "id": "1791034079180de29f6h45",
+        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791034077/i3l8olbumcw4rthb1i2x.mp4",
+        "type": "video",
+        "caption": "",
+        "muted": false
+      },
+      {
+        "id": "17910340886782r8w8t1s8",
+        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791034087/rvcn2kg76tucm4rufpw0.mp4",
+        "type": "video",
+        "caption": "",
+        "muted": false
+      },
+      {
+        "id": "1791034096892kosq7b0xx",
+        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791034095/yh7fuank79olkxthraqv.mp4",
+        "type": "video",
+        "caption": "",
+        "muted": false
+      },
+      {
+        "id": "1791034104321f2jgtx9hp",
+        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791034102/z9bu2wg1igtzmzyqbrih.mp4",
+        "type": "video",
+        "caption": "",
+        "muted": false
+      },
+      {
+        "id": "1791034115500a75a7i0a7",
+        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791034113/r1dc9cnbzeftps0rqtae.mp4",
+        "type": "video",
+        "caption": "",
+        "muted": false
       }
     ],
     "horizontalReels": [
@@ -462,15 +497,22 @@
         "muted": false
       },
       {
-        "id": "1781249454524ngveisb7d",
-        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1781249452/ilthbilqpblluqav44tg.mp4",
+        "id": "1791034128879fvd11bjw6",
+        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791034127/r59kdwekt2txkvsc3vih.mp4",
         "type": "video",
         "caption": "",
         "muted": false
       },
       {
-        "id": "1781249460581l72twfk1k",
-        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1781249458/ml3jnm4gn2kcs8lplogs.mp4",
+        "id": "1791034140625lnp9k69f6",
+        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791034139/ae1n8w6h5iijiy4vul54.mp4",
+        "type": "video",
+        "caption": "",
+        "muted": false
+      },
+      {
+        "id": "1791034147710fnsi3bb64",
+        "url": "https://res.cloudinary.com/dgkyqmres/video/upload/v1791034146/atcn85addrmytvj2gprj.mp4",
         "type": "video",
         "caption": "",
         "muted": false
