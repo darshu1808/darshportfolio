@@ -317,10 +317,17 @@
           "Meta Ads Manager",
           "Instagram & Facebook"
         ],
-        "image": "",
+        "image": "https://res.cloudinary.com/dgkyqmres/image/upload/v1794573316/nr871rxfbeydbvpym6ps.webp",
         "coverImage": "https://res.cloudinary.com/dgkyqmres/image/upload/v1794572708/ta9wovfhfgx2gu8zfgvg.jpg",
-        "video": "",
-        "gallery": [],
+        "video": "https://res.cloudinary.com/dgkyqmres/video/upload/v1794573207/qg6vrebzm5rngasssbaz.mp4",
+        "gallery": [
+          "https://res.cloudinary.com/dgkyqmres/image/upload/v1794573293/goe0xhdwmpo1ggqjzphj.webp",
+          "https://res.cloudinary.com/dgkyqmres/image/upload/v1794573297/ie0fpxpi3u4r6qzkgj4j.webp",
+          "https://res.cloudinary.com/dgkyqmres/image/upload/v1794573298/uo6dj7a0xkouw2m9aikx.webp",
+          "https://res.cloudinary.com/dgkyqmres/image/upload/v1794573298/qpdmhirawc5uymxnlyev.webp",
+          "https://res.cloudinary.com/dgkyqmres/image/upload/v1794573299/flodbhznb0mzemftibzb.webp",
+          "https://res.cloudinary.com/dgkyqmres/image/upload/v1794573300/gquqtgjx1doqerrxkxai.webp"
+        ],
         "results": [
           "450% Monthly Sales Growth (₹4L to ₹22L)",
           "₹32L+ Single-Month Flagship Revenue",
