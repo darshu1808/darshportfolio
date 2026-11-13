@@ -291,24 +291,43 @@
       {
         "id": "1",
         "slug": "brand-campaign",
-        "title": "Brand Campaign",
-        "client": "Tech Startup",
-        "category": "Social Media",
-        "description": "Complete social media overhaul resulting in 300% growth.",
-        "fullDescription": "",
-        "challenge": "",
-        "objectives": [],
-        "services": [],
-        "industry": "Technology",
-        "timeline": "3 months",
-        "tools": [],
+        "title": "House of Falafel – Multi-Outlet Brand Growth & Launch Campaign",
+        "client": "House of Falafel (HOF)",
+        "category": "Brand Strategy & Social Media Marketing",
+        "description": "Scaled monthly revenue from ₹4 Lakhs to ₹22 Lakhs across three Surat outlets and drove a ₹32+ Lakh launch month for a 150-seat flagship expansion through localized video storytelling, Meta ads, and a 100+ creator launch event.",
+        "fullDescription": "As Brand Manager and Digital Marketer at Frameinn Media, I spearheaded the end-to-end digital growth, outlet launch campaigns, and brand awareness strategy for House of Falafel (HOF) in Surat.   Starting from their initial footprint in Mota Varachha and Katargam, we built high-retention educational content around their signature falafel and packaged food products, paired with targeted Meta (Facebook & Instagram) ad campaigns. Within six months, monthly sales tripled from ₹4 Lakhs to ₹12 Lakhs, reaching ₹22 Lakhs per month by the end of Year 1.When HOF expanded to its third outlet in Sarthana, I conceptualized and executed a hyper-local awareness drive—featuring a viral auto-rickshaw POV video highlighting the exact route and storefront alongside culturally rooted creatives like \"Kem Cho Sarthana\" and \"Falafel Road\". Following the success across all three locations, we orchestrated the flagship expansion of the Mota Varachha outlet from 30–40 seats to a 150-seat dining destination—the largest House of Falafel outlet in Surat. By hosting an exclusive launch party with over 100 prominent Surat influencers and creators, we generated massive local buzz that propelled Mota Varachha's monthly revenue from ₹20 Lakhs to over ₹32 Lakhs within a single month.",
+        "challenge": "House of Falafel needed to build mass consumer familiarity for Middle Eastern cuisine in Surat's local neighborhoods, drive footfall to newly launched outlets in Katargam and Sarthana, and rapidly fill a 4x capacity expansion (from 30–40 to 150 seats) at its flagship Mota Varachha location without relying solely on discounts.",
+        "objectives": [
+          "Educate local audiences on falafel",
+          "Scale monthly outlet revenue from ₹4L to ₹20L+ within one year",
+          "Drive immediate neighborhood footfall for new Katargam and Sarthana launches",
+          "Execute a high-impact launch for the 150-seat Mota Varachha flagship expansion"
+        ],
+        "services": [
+          "Brand Strategy",
+          "Social Media Management",
+          "Performance Marketing (Meta Ads)",
+          "Video Production & Direction",
+          "Influencer Marketing & Event Management",
+          "Hyper-Local Launch Campaigns"
+        ],
+        "industry": "Food & Beverage (QSR & Casual Dining)",
+        "timeline": "6+ Months",
+        "tools": [
+          "Meta Ads Manager",
+          "Instagram & Facebook"
+        ],
         "image": "",
         "coverImage": "",
         "video": "",
         "gallery": [],
         "results": [
-          "300% Growth",
-          "1M+ Reach"
+          "450% Monthly Sales Growth (₹4L to ₹22L)",
+          "₹32L+ Single-Month Flagship Revenue",
+          "3 Surat Outlets Scaled",
+          "100+ Surat Influencers Activated",
+          "40 to 150 Seats Flagship Expansion",
+          "12M+ Reach"
         ],
         "featured": true
       }
