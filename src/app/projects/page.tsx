@@ -113,9 +113,9 @@ export default function ProjectsPage() {
                         alt={project.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                    ) : project.video ? (
+                    ) : (project.video || (project.verticalReels && project.verticalReels[0]) || (project.horizontalReels && project.horizontalReels[0])) ? (
                       <video
-                        src={project.video}
+                        src={project.video || (typeof project.verticalReels?.[0] === 'string' ? project.verticalReels[0] : project.verticalReels?.[0]?.url) || (typeof project.horizontalReels?.[0] === 'string' ? project.horizontalReels[0] : project.horizontalReels?.[0]?.url)}
                         autoPlay
                         loop
                         muted

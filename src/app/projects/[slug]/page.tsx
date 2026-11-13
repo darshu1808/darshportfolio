@@ -1,12 +1,266 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, ArrowRight, ExternalLink, ChevronLeft, ChevronRight, X, Play, Pause, Instagram, Linkedin, Mail, MessageCircle, MapPin, Phone, Send, Calendar, Wrench, Briefcase, Building2 } from 'lucide-react'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
+import { ArrowLeft, ArrowRight, ExternalLink, ChevronLeft, ChevronRight, X, Play, Pause, Volume2, VolumeX, Film, Video, Instagram, Linkedin, Mail, MessageCircle, MapPin, Phone, Send, Calendar, Wrench, Briefcase, Building2 } from 'lucide-react'
 import { useContent } from '@/context/ContentContext'
 import Navigation from '@/components/Navigation'
 import CustomCursor from '@/components/CustomCursor'
+
+// Interactive inView Carousel Row for Project Reels
+function ProjectReelsRow({
+  items,
+  label,
+  accentColor,
+  aspectRatio
+}: {
+  items: any[],
+  label: string,
+  accentColor: string,
+  aspectRatio: 'verticalVideo' | 'horizontal'
+}) {
+  const rowRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const isInView = useInView(rowRef, { amount: 0.3, once: false })
+  const [centerIndex, setCenterIndex] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isMuted, setIsMuted] = useState(true)
+  const [key, setKey] = useState(0)
+
+  const normalizedItems = (items || []).map((it, idx) => {
+    if (typeof it === 'string') {
+      return { id: String(idx), url: it, caption: '' }
+    }
+    return {
+      id: it.id || String(idx),
+      url: it.url || it,
+      caption: it.caption || ''
+    }
+  }).filter(it => Boolean(it.url))
+
+  if (normalizedItems.length === 0) return null
+
+  const nextSlide = useCallback(() => {
+    setCenterIndex(prev => (prev + 1) % normalizedItems.length)
+    setKey(prev => prev + 1)
+  }, [normalizedItems.length])
+
+  const prevSlide = useCallback(() => {
+    setCenterIndex(prev => (prev - 1 + normalizedItems.length) % normalizedItems.length)
+    setKey(prev => prev + 1)
+  }, [normalizedItems.length])
+
+  const togglePlayPause = useCallback(() => {
+    setIsPlaying(prev => !prev)
+  }, [])
+
+  const toggleMute = useCallback(() => {
+    setIsMuted(prev => !prev)
+  }, [])
+
+  // Auto play/pause only when scrolled into view
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isPlaying && isInView) {
+        videoRef.current.play().catch(() => {})
+      } else {
+        videoRef.current.pause()
+      }
+      videoRef.current.muted = isMuted
+    }
+  }, [isPlaying, isMuted, isInView, centerIndex])
+
+  const getVisibleItems = () => {
+    if (normalizedItems.length === 1) {
+      return [{ ...normalizedItems[0], position: 0, originalIndex: 0 }]
+    }
+    const result = []
+    for (let offset = -1; offset <= 1; offset++) {
+      let idx = centerIndex + offset
+      if (idx < 0) idx = normalizedItems.length + idx
+      if (idx >= normalizedItems.length) idx = idx - normalizedItems.length
+      result.push({ ...normalizedItems[idx], position: offset, originalIndex: idx })
+    }
+    return result
+  }
+
+  const visibleItems = getVisibleItems()
+
+  const dims = aspectRatio === 'verticalVideo'
+    ? { containerClass: 'w-[160px] h-[284px] md:w-[240px] md:h-[427px]', centerClass: 'w-[200px] h-[356px] md:w-[300px] md:h-[533px]', width: 300 }
+    : { containerClass: 'w-[200px] h-[113px] md:w-[380px] md:h-[213px]', centerClass: 'w-[260px] h-[146px] md:w-[480px] md:h-[270px]', width: 440 }
+
+  return (
+    <div
+      ref={rowRef}
+      className="py-6 md:py-10"
+      style={{ opacity: isInView ? 1 : 0.4, transition: 'opacity 0.5s ease' }}
+    >
+      <div className={`relative flex items-center justify-center ${aspectRatio === 'verticalVideo' ? 'h-[420px] md:h-[620px]' : 'h-[280px] md:h-[420px]'}`}>
+        {/* Label */}
+        <div className="absolute left-1/2 -translate-x-1/2 z-40 text-center top-0">
+          <h3 className={`text-lg md:text-2xl font-medium ${accentColor}`}>{label}</h3>
+        </div>
+
+        {/* Prev Button */}
+        {normalizedItems.length > 1 && (
+          <button
+            onClick={prevSlide}
+            className="absolute left-2 md:left-4 z-50 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all text-white"
+            aria-label="Previous reel"
+          >
+            <ChevronLeft className="w-4 h-4 md:w-6 md:h-6" />
+          </button>
+        )}
+
+        {/* Cards */}
+        <div className="relative flex items-center justify-center gap-2 md:gap-4" style={{ width: dims.width }}>
+          {visibleItems.map((item: any) => {
+            const isCenter = item.position === 0
+            const isLeft = item.position === -1
+
+            return (
+              <motion.div
+                key={`${item.id}-${item.position}-${key}`}
+                className={`absolute transition-all duration-500 ease-out ${
+                  isCenter ? dims.centerClass : dims.containerClass
+                } ${isCenter ? 'z-30 scale-100 shadow-2xl' : 'z-10 scale-75 opacity-40 blur-[1px]'}`}
+                animate={
+                  normalizedItems.length === 1
+                    ? { left: '50%', x: '-50%', scale: 1, opacity: 1, zIndex: 30 }
+                    : {
+                        left: isCenter ? '50%' : isLeft ? '15%' : '85%',
+                        x: '-50%',
+                        scale: isCenter ? 1 : 0.75,
+                        opacity: isCenter ? 1 : 0.4,
+                        zIndex: isCenter ? 30 : 10
+                      }
+                }
+              >
+                <div className="w-full h-full rounded-2xl overflow-hidden border-2 border-white/10 bg-black shadow-2xl relative">
+                  <video
+                    ref={isCenter ? videoRef : null}
+                    src={item.url}
+                    loop
+                    playsInline
+                    muted={isMuted}
+                    className="w-full h-full object-cover"
+                  />
+
+                  {/* Sound Toggle (Center Only) */}
+                  {isCenter && (
+                    <button
+                      onClick={toggleMute}
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center z-40 hover:bg-black/80 transition-all text-white"
+                      title={isMuted ? "Unmute" : "Mute"}
+                    >
+                      {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                    </button>
+                  )}
+
+                  {/* Play/Pause (Center Only) */}
+                  {isCenter && (
+                    <button
+                      onClick={togglePlayPause}
+                      className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center z-40 hover:bg-black/80 transition-all text-white"
+                      title={isPlaying ? "Pause" : "Play"}
+                    >
+                      {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                    </button>
+                  )}
+
+                  {/* Caption */}
+                  {item.caption && isCenter && (
+                    <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                      <p className="text-white text-xs line-clamp-2">{item.caption}</p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )
+          })}
+        </div>
+
+        {/* Next Button */}
+        {normalizedItems.length > 1 && (
+          <button
+            onClick={nextSlide}
+            className="absolute right-2 md:right-4 z-50 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all text-white"
+            aria-label="Next reel"
+          >
+            <ChevronRight className="w-4 h-4 md:w-6 md:h-6" />
+          </button>
+        )}
+      </div>
+
+      {/* Dots Indicator */}
+      {normalizedItems.length > 1 && (
+        <div className="flex justify-center gap-1.5 mt-4">
+          {normalizedItems.map((_: any, i: number) => (
+            <button
+              key={i}
+              onClick={() => { setCenterIndex(i); setIsPlaying(true); setKey(prev => prev + 1) }}
+              className={`transition-all duration-300 ${
+                centerIndex === i ? 'w-5 h-1.5 bg-white rounded-full' : 'w-1.5 h-1.5 bg-white/30 rounded-full hover:bg-white/50'
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Single Video InView Player (plays only when scrolled to, never prematurely)
+function InViewSingleVideo({ src }: { src: string }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const isInView = useInView(containerRef, { amount: 0.3, once: false })
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isMuted, setIsMuted] = useState(true)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isPlaying && isInView) {
+        videoRef.current.play().catch(() => {})
+      } else {
+        videoRef.current.pause()
+      }
+      videoRef.current.muted = isMuted
+    }
+  }, [isPlaying, isMuted, isInView])
+
+  return (
+    <div ref={containerRef} className="relative aspect-video rounded-3xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl">
+      <video
+        ref={videoRef}
+        src={src}
+        loop
+        muted={isMuted}
+        playsInline
+        className="w-full h-full object-contain"
+      />
+      <div className="absolute bottom-4 right-4 flex items-center gap-2">
+        <button
+          onClick={() => setIsMuted(!isMuted)}
+          className="px-3 py-2 bg-black/60 backdrop-blur-sm rounded-lg text-white text-sm flex items-center gap-2 hover:bg-black/80 transition-colors"
+        >
+          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          {isMuted ? 'Unmute' : 'Mute'}
+        </button>
+        <button
+          onClick={() => setIsPlaying(!isPlaying)}
+          className="px-3 py-2 bg-black/60 backdrop-blur-sm rounded-lg text-white text-sm flex items-center gap-2 hover:bg-black/80 transition-colors"
+        >
+          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+          {isPlaying ? 'Pause' : 'Play'}
+        </button>
+      </div>
+    </div>
+  )
+}
 
 export default function ProjectDetailsPage() {
   const params = useParams()
@@ -302,32 +556,47 @@ export default function ProjectDetailsPage() {
             </div>
           </motion.div>
 
-          {/* Project Video */}
-          {currentProject.video && (
+          {/* Project Reels & Videos Showcase */}
+          {((currentProject.verticalReels && currentProject.verticalReels.length > 0) ||
+            (currentProject.horizontalReels && currentProject.horizontalReels.length > 0) ||
+            currentProject.video) && (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mb-12"
+              className="mb-16"
             >
-              <h2 className="text-2xl font-bold text-white mb-6">Project Video</h2>
-              <div className="relative aspect-video rounded-3xl overflow-hidden bg-white/5">
-                <video
-                  src={currentProject.video}
-                  autoPlay
-                  loop
-                  muted={!videoPlaying}
-                  playsInline
-                  className="w-full h-full object-contain"
-                />
-                <button
-                  onClick={() => setVideoPlaying(!videoPlaying)}
-                  className="absolute bottom-4 right-4 px-4 py-2 bg-black/50 backdrop-blur-sm rounded-lg text-white text-sm flex items-center gap-2 hover:bg-black/70 transition-colors"
-                >
-                  {videoPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                  {videoPlaying ? 'Mute' : 'Play Sound'}
-                </button>
+              <div className="text-center mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Project Media & Reels</h2>
+                <p className="text-white/40 text-sm">Interactive showcase of video creatives and reels for this project.</p>
               </div>
+
+              {/* Vertical Reels (9:16) */}
+              {currentProject.verticalReels && currentProject.verticalReels.length > 0 && (
+                <ProjectReelsRow
+                  items={currentProject.verticalReels}
+                  label="Vertical Reels (9:16)"
+                  accentColor="text-purple-400"
+                  aspectRatio="verticalVideo"
+                />
+              )}
+
+              {/* Horizontal Videos (16:9) */}
+              {currentProject.horizontalReels && currentProject.horizontalReels.length > 0 && (
+                <ProjectReelsRow
+                  items={currentProject.horizontalReels}
+                  label="Horizontal Videos (16:9)"
+                  accentColor="text-blue-400"
+                  aspectRatio="horizontal"
+                />
+              )}
+
+              {/* Legacy Single Video Fallback (InView aware, no premature autoplay) */}
+              {(!currentProject.verticalReels || currentProject.verticalReels.length === 0) &&
+               (!currentProject.horizontalReels || currentProject.horizontalReels.length === 0) &&
+               currentProject.video && (
+                <InViewSingleVideo src={currentProject.video} />
+              )}
             </motion.div>
           )}
 

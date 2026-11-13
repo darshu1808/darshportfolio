@@ -1,7 +1,7 @@
 'use client'
 // Admin Panel - Content Management System
 import React, { useState, useEffect, useRef } from 'react'
-import { Save, Eye, Plus, Trash2, Upload, X, Image, Video, Settings, Briefcase, Building, Layers, Palette, FileText, Link, Copy, RefreshCw, Loader2, Volume2, VolumeX, FolderOpen, Lock, Loader, Calendar } from 'lucide-react'
+import { Save, Eye, Plus, Trash2, Upload, X, Image, Video, Film, Settings, Briefcase, Building, Layers, Palette, FileText, Link, Copy, RefreshCw, Loader2, Volume2, VolumeX, FolderOpen, Lock, Loader, Calendar } from 'lucide-react'
 
 const CLOUDINARY_CLOUD_NAME = 'dgkyqmres'
 
@@ -126,7 +126,7 @@ const defaultContent = {
     title: "Featured Work",
     description: "A collection of projects showcasing my expertise in digital marketing and creative strategy.",
     items: [
-      { id: "1", slug: "brand-campaign", title: "Brand Campaign", client: "Tech Startup", category: "Social Media", description: "Complete social media overhaul resulting in 300% growth.", fullDescription: "", challenge: "", objectives: [], services: [], industry: "Technology", timeline: "3 months", tools: [], image: "", coverImage: "", video: "", gallery: [], results: ["300% Growth", "1M+ Reach"], featured: true }
+      { id: "1", slug: "brand-campaign", title: "Brand Campaign", client: "Tech Startup", category: "Social Media", description: "Complete social media overhaul resulting in 300% growth.", fullDescription: "", challenge: "", objectives: [], services: [], industry: "Technology", timeline: "3 months", tools: [], image: "", coverImage: "", video: "", verticalReels: [], horizontalReels: [], gallery: [], results: ["300% Growth", "1M+ Reach"], featured: true }
     ]
   },
   brands: {
@@ -503,6 +503,97 @@ export default function AdminPanel() {
   const removeFromGallery = (id: string) => {
     const newGallery = (content.media?.gallery || []).filter((item: any) => item.id !== id)
     setContent((prev: any) => ({ ...prev, media: { gallery: newGallery } }))
+  }
+
+  // Project Reels handlers
+  const handleProjectReelUpload = async (
+    projectIndex: number,
+    field: 'verticalReels' | 'horizontalReels',
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = event.target.files
+    if (!files || files.length === 0) return
+    setUploading(true)
+    try {
+      const newItems = [...(content as any).projects.items]
+      const currentReels = [...(newItems[projectIndex][field] || [])]
+      for (let f = 0; f < files.length; f++) {
+        const file = files[f]
+        const url = await uploadToCloudinary(file, 'video')
+        currentReels.push({
+          id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+          url,
+          caption: '',
+          type: 'video'
+        })
+      }
+      newItems[projectIndex] = {
+        ...newItems[projectIndex],
+        [field]: currentReels
+      }
+      updateField('projects', 'items', newItems)
+    } catch (error) {
+      alert('Video upload failed. Please try again.')
+      console.error(error)
+    } finally {
+      setUploading(false)
+      event.target.value = ''
+    }
+  }
+
+  const addProjectReelByUrl = (
+    projectIndex: number,
+    field: 'verticalReels' | 'horizontalReels',
+    url: string
+  ) => {
+    if (!url || !url.trim()) return
+    const newItems = [...(content as any).projects.items]
+    const currentReels = [...(newItems[projectIndex][field] || [])]
+    currentReels.push({
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+      url: url.trim(),
+      caption: '',
+      type: 'video'
+    })
+    newItems[projectIndex] = {
+      ...newItems[projectIndex],
+      [field]: currentReels
+    }
+    updateField('projects', 'items', newItems)
+  }
+
+  const removeProjectReel = (
+    projectIndex: number,
+    field: 'verticalReels' | 'horizontalReels',
+    reelIndex: number
+  ) => {
+    const newItems = [...(content as any).projects.items]
+    const currentReels = [...(newItems[projectIndex][field] || [])].filter((_, idx) => idx !== reelIndex)
+    newItems[projectIndex] = {
+      ...newItems[projectIndex],
+      [field]: currentReels
+    }
+    updateField('projects', 'items', newItems)
+  }
+
+  const updateProjectReelCaption = (
+    projectIndex: number,
+    field: 'verticalReels' | 'horizontalReels',
+    reelIndex: number,
+    caption: string
+  ) => {
+    const newItems = [...(content as any).projects.items]
+    const currentReels = [...(newItems[projectIndex][field] || [])]
+    if (currentReels[reelIndex]) {
+      currentReels[reelIndex] = typeof currentReels[reelIndex] === 'string'
+        ? { id: Date.now().toString(), url: currentReels[reelIndex], caption, type: 'video' }
+        : { ...currentReels[reelIndex], caption }
+      newItems[projectIndex] = {
+        ...newItems[projectIndex],
+        [field]: currentReels
+      }
+      updateField('projects', 'items', newItems)
+    }
   }
 
   // Content Showcase handlers
@@ -1093,7 +1184,7 @@ export default function AdminPanel() {
                   <Image className="w-6 h-6" />
                   Projects / Portfolio
                 </h2>
-                <button onClick={() => addItem('projects', { id: Date.now().toString(), slug: "", title: "New Project", client: "Client Name", category: "Category", description: "Project description", fullDescription: "", challenge: "", objectives: [], services: [], industry: "", timeline: "", tools: [], image: "", coverImage: "", video: "", gallery: [], results: [], featured: true })} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-2">
+                <button onClick={() => addItem('projects', { id: Date.now().toString(), slug: "", title: "New Project", client: "Client Name", category: "Category", description: "Project description", fullDescription: "", challenge: "", objectives: [], services: [], industry: "", timeline: "", tools: [], image: "", coverImage: "", video: "", verticalReels: [], horizontalReels: [], gallery: [], results: [], featured: true })} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-2">
                   <Plus className="w-4 h-4" /> Add Project
                 </button>
               </div>
@@ -1268,21 +1359,238 @@ export default function AdminPanel() {
                         )}
                       </div>
 
-                      {/* VIDEO UPLOAD */}
-                      <div className="bg-gray-700/50 p-4 rounded-lg">
-                        <h4 className="text-sm font-semibold mb-3 flex items-center gap-2"><Video className="w-4 h-4" /> Project Video (Optional)</h4>
-                        {project.video ? (
-                          <div className="relative">
-                            <video src={project.video} controls className="w-full h-48 object-cover rounded-lg" />
-                            <button onClick={() => { const newItems = [...(content as any).projects.items]; newItems[i].video = ''; updateField('projects', 'items', newItems) }} className="absolute top-2 right-2 p-2 bg-red-600 rounded-lg"><X className="w-4 h-4" /></button>
+                      {/* PROJECT REELS & VIDEOS SECTION */}
+                      <div className="bg-gray-700/40 p-5 rounded-xl border border-gray-600/50 space-y-5">
+                        <div>
+                          <h4 className="text-base font-semibold text-purple-300 flex items-center gap-2">
+                            <Film className="w-5 h-5 text-purple-400" /> Project Reels & Videos Showcase
+                          </h4>
+                          <p className="text-xs text-gray-400 mt-1">
+                            Add multiple vertical reels (at least 3–4 reels recommended) and optional horizontal videos. These will be displayed on the project page just like the main reel showcase!
+                          </p>
+                        </div>
+
+                        {/* 1. Vertical Reels (9:16) */}
+                        <div className="bg-gray-800/90 p-4 rounded-lg border border-purple-500/30">
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="text-sm font-semibold text-purple-300 flex items-center gap-2">
+                              <Film className="w-4 h-4 text-purple-400" /> Vertical Reels (9:16) — Recommended 3 to 4 Reels
+                            </span>
+                            <span className="text-xs bg-purple-500/20 text-purple-300 px-2.5 py-0.5 rounded-full font-medium">
+                              {(project.verticalReels || []).length} uploaded
+                            </span>
                           </div>
-                        ) : (
-                          <label className="w-full h-32 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 transition-colors">
-                            <Video className="w-8 h-8 text-gray-500 mb-2" />
-                            <span className="text-sm text-gray-500">Click to upload video</span>
-                            <input type="file" accept="video/*" className="hidden" onChange={(e) => handleImageUpload('projects', i, 'video', e)} />
-                          </label>
-                        )}
+
+                          {/* List of Vertical Reels */}
+                          {(project.verticalReels || []).length > 0 && (
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-3">
+                              {(project.verticalReels || []).map((reel: any, rIdx: number) => {
+                                const reelUrl = typeof reel === 'string' ? reel : reel.url
+                                const reelCaption = typeof reel === 'string' ? '' : reel.caption
+                                return (
+                                  <div key={rIdx} className="relative bg-gray-900 rounded-lg p-2 border border-gray-700 flex flex-col gap-2">
+                                    <div className="relative aspect-[9/16] w-full rounded overflow-hidden bg-black">
+                                      <video src={reelUrl} className="w-full h-full object-cover" controls preload="metadata" />
+                                      <button
+                                        type="button"
+                                        onClick={() => removeProjectReel(i, 'verticalReels', rIdx)}
+                                        className="absolute top-1 right-1 p-1 bg-red-600 hover:bg-red-700 text-white rounded-md z-10 transition-colors"
+                                        title="Delete Reel"
+                                      >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                      </button>
+                                    </div>
+                                    <input
+                                      type="text"
+                                      placeholder="Caption (optional)"
+                                      value={reelCaption || ''}
+                                      onChange={(e) => updateProjectReelCaption(i, 'verticalReels', rIdx, e.target.value)}
+                                      className="w-full px-2 py-1 text-xs bg-gray-800 border border-gray-700 rounded text-gray-200 focus:border-purple-500 focus:outline-none"
+                                    />
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          )}
+
+                          {/* Upload or Add URL for Vertical Reels */}
+                          <div className="flex flex-col sm:flex-row gap-2">
+                            <label className={`flex-1 p-3 border-2 border-dashed border-purple-500/50 hover:border-purple-400 rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                              {uploading ? (
+                                <>
+                                  <Loader2 className="w-4 h-4 text-purple-400 animate-spin" />
+                                  <span className="text-xs text-purple-300">Uploading Reel...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Plus className="w-4 h-4 text-purple-400" />
+                                  <span className="text-xs text-purple-300 font-medium">Click to Upload Vertical Reel(s)</span>
+                                </>
+                              )}
+                              <input
+                                type="file"
+                                accept="video/*"
+                                multiple
+                                className="hidden"
+                                onChange={(e) => handleProjectReelUpload(i, 'verticalReels', e)}
+                                disabled={uploading}
+                              />
+                            </label>
+                            <div className="flex gap-1 sm:w-1/2">
+                              <input
+                                type="text"
+                                id={`vert-url-input-${i}`}
+                                placeholder="Or paste video URL..."
+                                className="flex-1 px-3 py-1.5 text-xs bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none"
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    addProjectReelByUrl(i, 'verticalReels', e.currentTarget.value)
+                                    e.currentTarget.value = ''
+                                  }
+                                }}
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const input = document.getElementById(`vert-url-input-${i}`) as HTMLInputElement
+                                  if (input && input.value) {
+                                    addProjectReelByUrl(i, 'verticalReels', input.value)
+                                    input.value = ''
+                                  }
+                                }}
+                                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs rounded-lg font-medium transition-colors"
+                              >
+                                Add URL
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 2. Horizontal Videos (16:9 - Optional) */}
+                        <div className="bg-gray-800/90 p-4 rounded-lg border border-blue-500/30">
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="text-sm font-semibold text-blue-300 flex items-center gap-2">
+                              <Video className="w-4 h-4 text-blue-400" /> Horizontal Videos (16:9) — Optional (1 to 2+ Videos)
+                            </span>
+                            <span className="text-xs bg-blue-500/20 text-blue-300 px-2.5 py-0.5 rounded-full font-medium">
+                              {(project.horizontalReels || []).length} uploaded
+                            </span>
+                          </div>
+
+                          {/* List of Horizontal Videos */}
+                          {(project.horizontalReels || []).length > 0 && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">
+                              {(project.horizontalReels || []).map((reel: any, rIdx: number) => {
+                                const reelUrl = typeof reel === 'string' ? reel : reel.url
+                                const reelCaption = typeof reel === 'string' ? '' : reel.caption
+                                return (
+                                  <div key={rIdx} className="relative bg-gray-900 rounded-lg p-2 border border-gray-700 flex flex-col gap-2">
+                                    <div className="relative aspect-video w-full rounded overflow-hidden bg-black">
+                                      <video src={reelUrl} className="w-full h-full object-cover" controls preload="metadata" />
+                                      <button
+                                        type="button"
+                                        onClick={() => removeProjectReel(i, 'horizontalReels', rIdx)}
+                                        className="absolute top-1 right-1 p-1 bg-red-600 hover:bg-red-700 text-white rounded-md z-10 transition-colors"
+                                        title="Delete Video"
+                                      >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                      </button>
+                                    </div>
+                                    <input
+                                      type="text"
+                                      placeholder="Caption (optional)"
+                                      value={reelCaption || ''}
+                                      onChange={(e) => updateProjectReelCaption(i, 'horizontalReels', rIdx, e.target.value)}
+                                      className="w-full px-2 py-1 text-xs bg-gray-800 border border-gray-700 rounded text-gray-200 focus:border-blue-500 focus:outline-none"
+                                    />
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          )}
+
+                          {/* Upload or Add URL for Horizontal Videos */}
+                          <div className="flex flex-col sm:flex-row gap-2">
+                            <label className={`flex-1 p-3 border-2 border-dashed border-blue-500/50 hover:border-blue-400 rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                              {uploading ? (
+                                <>
+                                  <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />
+                                  <span className="text-xs text-blue-300">Uploading Video...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Plus className="w-4 h-4 text-blue-400" />
+                                  <span className="text-xs text-blue-300 font-medium">Click to Upload Horizontal Video(s)</span>
+                                </>
+                              )}
+                              <input
+                                type="file"
+                                accept="video/*"
+                                multiple
+                                className="hidden"
+                                onChange={(e) => handleProjectReelUpload(i, 'horizontalReels', e)}
+                                disabled={uploading}
+                              />
+                            </label>
+                            <div className="flex gap-1 sm:w-1/2">
+                              <input
+                                type="text"
+                                id={`horiz-url-input-${i}`}
+                                placeholder="Or paste video URL..."
+                                className="flex-1 px-3 py-1.5 text-xs bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    addProjectReelByUrl(i, 'horizontalReels', e.currentTarget.value)
+                                    e.currentTarget.value = ''
+                                  }
+                                }}
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const input = document.getElementById(`horiz-url-input-${i}`) as HTMLInputElement
+                                  if (input && input.value) {
+                                    addProjectReelByUrl(i, 'horizontalReels', input.value)
+                                    input.value = ''
+                                  }
+                                }}
+                                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-lg font-medium transition-colors"
+                              >
+                                Add URL
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 3. Featured Single Video (Optional / Fallback) */}
+                        <div className="bg-gray-800/60 p-3 rounded-lg border border-gray-700">
+                          <h5 className="text-xs font-semibold text-gray-400 mb-2 flex items-center gap-2">
+                            <Video className="w-3.5 h-3.5 text-gray-400" /> Featured Single Video (Optional / Fallback)
+                          </h5>
+                          {project.video ? (
+                            <div className="relative">
+                              <video src={project.video} controls className="w-full h-36 object-cover rounded-lg" />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newItems = [...(content as any).projects.items]
+                                  newItems[i].video = ''
+                                  updateField('projects', 'items', newItems)
+                                }}
+                                className="absolute top-2 right-2 p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                                title="Remove video"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ) : (
+                            <label className="w-full h-20 border border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-gray-500 transition-colors">
+                              <Video className="w-5 h-5 text-gray-500 mb-1" />
+                              <span className="text-xs text-gray-400">Click to upload single video (or use reels above)</span>
+                              <input type="file" accept="video/*" className="hidden" onChange={(e) => handleImageUpload('projects', i, 'video', e)} />
+                            </label>
+                          )}
+                        </div>
                       </div>
 
                       {/* RESULTS */}
