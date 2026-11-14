@@ -1,35 +1,29 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import { BrandFlowProvider } from '@/context/BrandFlowContext';
+import type { Metadata } from 'next'
+import './globals.css'
+import { ContentProvider } from '@/context/ContentContext'
 
 export const metadata: Metadata = {
-  title: 'BrandFlow — Cloud Brand Management & Marketing Operations SaaS',
-  description: 'Centralized operational workspace for multi-brand marketing, content shoots, social posting, creative reviews, and automated handovers.',
-  icons: {
-    icon: '/favicon.ico',
-  }
-};
+  title: 'Darsh Pandav | Digital Marketer & Strategist',
+  description: 'Building brands through strategy, content & AI-powered marketing. Futuristic portfolio of Darsh Pandav.',
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" 
-          rel="stylesheet" 
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="bg-[#F7F9FC] text-[#172033] antialiased">
-        <BrandFlowProvider>
+      <body className="bg-dark text-white font-sans antialiased">
+        <ContentProvider>
           {children}
-        </BrandFlowProvider>
+        </ContentProvider>
       </body>
     </html>
-  );
+  )
 }

@@ -10,6 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        dark: "#0B1020",
+        "dark-alt": "#111827",
+        accent: {
+          blue: "#00C2FF",
+          purple: "#6D5EF3",
+          silver: "#FFFFFF"
+        },
         obsidian: {
           950: "#060913",
           900: "#0B1120",
@@ -50,6 +57,16 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Syncopate', 'sans-serif']
+      },
+      animation: {
+        marquee: 'marquee 25s linear infinite',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        }
       },
       boxShadow: {
         subtle: "0 1px 2px 0 rgba(0, 0, 0, 0.04), 0 1px 1px 0 rgba(0, 0, 0, 0.02)",
