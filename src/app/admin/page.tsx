@@ -696,7 +696,7 @@ export default function AdminPanel() {
       <header className="bg-gray-800 border-b border-gray-700 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold">Portfolio Admin</h1>
-          <span className="text-xs bg-gradient-to-r from-blue-600 to-purple-600 px-3 py-1 rounded-full">CMS v2.0</span>
+          <span className="text-xs bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 px-3 py-1 rounded-full font-semibold">CMS v2.2 (Multi-Reels)</span>
         </div>
         <div className="flex items-center gap-3">
           <button
