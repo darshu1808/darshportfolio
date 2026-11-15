@@ -30,6 +30,15 @@ function ProjectVideoCard({
     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
   }, [])
 
+  // Reset video playback state when video item changes in loop
+  useEffect(() => {
+    setIsPlaying(false)
+    if (videoRef.current) {
+      videoRef.current.pause()
+      videoRef.current.currentTime = 0
+    }
+  }, [item.url])
+
   // Desktop hover play / pause
   const handleMouseEnter = () => {
     if (!isTouchDevice && videoRef.current) {
@@ -162,129 +171,226 @@ function ProjectVideoCard({
   )
 }
 
-// Paginated Grid Slider Component (3 items for Vertical, 2 items for Horizontal)
+// Infinite Loop Continuous Video Slider Component (3 items Desktop Vertical, 2 Desktop Horizontal, 1 on Mobile)
 function PaginatedVideoGrid({
   items,
   pageSize = 3,
+  desktopCount,
   aspectRatio = 'vertical',
   onExpand
 }: {
   items: any[],
   pageSize?: number,
+  desktopCount?: number,
   aspectRatio?: 'vertical' | 'horizontal',
   onExpand?: (url: string) => void
 }) {
-  const [currentPage, setCurrentPage] = useState(0)
-  const totalPages = Math.ceil(items.length / pageSize)
+  const [startIndex, setStartIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+  const [touchStartX, setTouchStartX] = useState<number | null>(null)
+  const [touchEndX, setTouchEndX] = useState<number | null>(null)
 
-  // Auto-clamp page index if item list size changes
+  const count = items ? items.length : 0
+  const targetDesktopCount = desktopCount || pageSize || (aspectRatio === 'vertical' ? 3 : 2)
+
+  // Detect mobile screen (< 768px)
   useEffect(() => {
-    if (currentPage >= totalPages && totalPages > 0) {
-      setCurrentPage(totalPages - 1)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
     }
-  }, [items.length, totalPages, currentPage])
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
+  if (count === 0) return null
+
+  // On Mobile: Strictly 1 reel at a time.
+  // On Desktop: Math.min(count, targetDesktopCount)
+  const visibleCount = isMobile ? 1 : Math.min(count, targetDesktopCount)
+  const showControls = isMobile ? count > 1 : count > targetDesktopCount
+
+  // Continuous infinite loop navigation
   const handlePrev = () => {
-    setCurrentPage((prev) => (prev > 0 ? prev - 1 : totalPages - 1))
+    setStartIndex((prev) => (prev - 1 + count) % count)
   }
 
   const handleNext = () => {
-    setCurrentPage((prev) => (prev < totalPages - 1 ? prev + 1 : 0))
+    setStartIndex((prev) => (prev + 1) % count)
   }
 
-  const currentItems = items.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+  // Mobile Touch Swipe Handlers (Swipe left for Next, Swipe right for Prev)
+  const minSwipeDistance = 40
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEndX(null)
+    setTouchStartX(e.targetTouches[0].clientX)
+  }
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX)
+  }
+  const onTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return
+    const distance = touchStartX - touchEndX
+    if (distance > minSwipeDistance) {
+      handleNext()
+    } else if (distance < -minSwipeDistance) {
+      handlePrev()
+    }
+  }
+
+  // Construct circular visible items slice
+  const visibleItems = []
+  for (let i = 0; i < visibleCount; i++) {
+    const idx = (startIndex + i) % count
+    visibleItems.push({
+      item: items[idx],
+      originalIndex: idx,
+      displaySlot: i
+    })
+  }
 
   return (
-    <div className="relative">
-      {/* Side Arrow: Prev Button (Desktop/Tablet) */}
-      {totalPages > 1 && (
+    <div
+      className="relative px-0 md:px-4"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* Side Arrow: Prev Button (Desktop/Tablet - Placed further out with generous breathing space) */}
+      {showControls && (
         <button
           onClick={handlePrev}
-          className="hidden md:flex absolute -left-5 lg:-left-7 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-black/80 hover:bg-accent-blue/90 border border-white/20 text-white items-center justify-center shadow-2xl backdrop-blur-md transition-all hover:scale-110 active:scale-95"
-          title="Previous batch"
-          aria-label="Previous batch"
+          className="hidden md:flex absolute -left-12 lg:-left-16 xl:-left-20 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-dark/95 hover:bg-accent-blue/90 border border-white/20 hover:border-accent-blue text-white items-center justify-center shadow-2xl backdrop-blur-xl transition-all duration-300 hover:scale-110 active:scale-95 group"
+          title="Previous (Infinite Loop)"
+          aria-label="Previous reel"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-7 h-7 group-hover:-translate-x-0.5 transition-transform" />
         </button>
       )}
 
-      {/* Side Arrow: Next Button (Desktop/Tablet) */}
-      {totalPages > 1 && (
+      {/* Side Arrow: Next Button (Desktop/Tablet - Placed further out with generous breathing space) */}
+      {showControls && (
         <button
           onClick={handleNext}
-          className="hidden md:flex absolute -right-5 lg:-right-7 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-black/80 hover:bg-accent-blue/90 border border-white/20 text-white items-center justify-center shadow-2xl backdrop-blur-md transition-all hover:scale-110 active:scale-95"
-          title="Next batch"
-          aria-label="Next batch"
+          className="hidden md:flex absolute -right-12 lg:-right-16 xl:-right-20 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-dark/95 hover:bg-accent-blue/90 border border-white/20 hover:border-accent-blue text-white items-center justify-center shadow-2xl backdrop-blur-xl transition-all duration-300 hover:scale-110 active:scale-95 group"
+          title="Next (Infinite Loop)"
+          aria-label="Next reel"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-7 h-7 group-hover:translate-x-0.5 transition-transform" />
         </button>
       )}
 
-      {/* Grid Content with Animated Page Transition */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentPage}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.3 }}
-          className={
-            aspectRatio === 'vertical'
-              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
-              : 'grid grid-cols-1 md:grid-cols-2 gap-6'
-          }
-        >
-          {currentItems.map((reel: any, idx: number) => {
-            const normalized = typeof reel === 'string' ? { url: reel } : reel
-            return (
-              <ProjectVideoCard
-                key={normalized.id || `${currentPage}-${idx}`}
-                item={normalized}
-                aspectRatio={aspectRatio}
-                onExpand={onExpand}
-              />
-            )
-          })}
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Pagination Controls & Dots (Mobile Buttons + Interactive Indicators) */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-4 mt-8">
+      {/* Mobile Floating Side Arrows directly beside the single centered reel */}
+      {showControls && isMobile && (
+        <>
           <button
             onClick={handlePrev}
-            className="flex md:hidden items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all active:scale-95"
-            aria-label="Previous"
+            className="flex md:hidden absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/85 hover:bg-black border border-white/30 text-white items-center justify-center shadow-2xl backdrop-blur-md active:scale-90 transition-all"
+            aria-label="Previous reel"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-6 h-6" />
           </button>
-
-          <div className="flex items-center gap-2">
-            {Array.from({ length: totalPages }).map((_, pIdx) => (
-              <button
-                key={pIdx}
-                onClick={() => setCurrentPage(pIdx)}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
-                  pIdx === currentPage
-                    ? (aspectRatio === 'vertical' ? 'w-8 bg-purple-400 shadow-lg shadow-purple-500/50' : 'w-8 bg-accent-blue shadow-lg shadow-accent-blue/50')
-                    : 'w-2.5 bg-white/20 hover:bg-white/40'
-                }`}
-                aria-label={`Go to page ${pIdx + 1}`}
-              />
-            ))}
-          </div>
-
           <button
             onClick={handleNext}
-            className="flex md:hidden items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all active:scale-95"
-            aria-label="Next"
+            className="flex md:hidden absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/85 hover:bg-black border border-white/30 text-white items-center justify-center shadow-2xl backdrop-blur-md active:scale-90 transition-all"
+            aria-label="Next reel"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-6 h-6" />
           </button>
+        </>
+      )}
+
+      {/* Video Cards Layout */}
+      <div
+        className={
+          isMobile
+            ? (aspectRatio === 'vertical' ? 'max-w-[340px] sm:max-w-sm mx-auto' : 'max-w-md mx-auto')
+            : (aspectRatio === 'vertical'
+                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                : 'grid grid-cols-1 md:grid-cols-2 gap-6')
+        }
+      >
+        <AnimatePresence mode="popLayout" initial={false}>
+          {visibleItems.map(({ item, originalIndex, displaySlot }) => {
+            const normalized = typeof item === 'string' ? { url: reelUrl(item) } : item
+            return (
+              <motion.div
+                key={`${originalIndex}-${displaySlot}`}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.28, ease: 'easeInOut' }}
+                className="w-full"
+              >
+                <ProjectVideoCard
+                  item={normalized}
+                  aspectRatio={aspectRatio}
+                  onExpand={onExpand}
+                />
+              </motion.div>
+            )
+          })}
+        </AnimatePresence>
+      </div>
+
+      {/* Bottom Controls Bar: Prev/Next buttons, Dots indicator & Counter */}
+      {showControls && (
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+          <div className="flex items-center gap-3">
+            {/* Quick Prev Button for Mobile/Tablet */}
+            <button
+              onClick={handlePrev}
+              className="flex items-center justify-center px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-medium transition-all active:scale-95 gap-1.5 shadow-lg"
+              aria-label="Previous"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span>Prev</span>
+            </button>
+
+            {/* Circular Dot Indicators */}
+            <div className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+              {items.map((_, pIdx) => {
+                const isActive = pIdx === startIndex
+                return (
+                  <button
+                    key={pIdx}
+                    onClick={() => setStartIndex(pIdx)}
+                    className={`h-2.5 rounded-full transition-all duration-300 ${
+                      isActive
+                        ? (aspectRatio === 'vertical' ? 'w-8 bg-purple-400 shadow-lg shadow-purple-500/50' : 'w-8 bg-accent-blue shadow-lg shadow-accent-blue/50')
+                        : 'w-2.5 bg-white/25 hover:bg-white/50'
+                    }`}
+                    title={`Reel ${pIdx + 1}`}
+                    aria-label={`Go to reel ${pIdx + 1}`}
+                  />
+                )
+              })}
+            </div>
+
+            {/* Quick Next Button for Mobile/Tablet */}
+            <button
+              onClick={handleNext}
+              className="flex items-center justify-center px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-medium transition-all active:scale-95 gap-1.5 shadow-lg"
+              aria-label="Next"
+            >
+              <span>Next</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Current Reel Indicator Badge */}
+          <div className="text-xs text-white/60 font-mono tracking-wider px-3 py-1 rounded-full bg-white/5 border border-white/10">
+            {aspectRatio === 'vertical' ? 'Reel' : 'Film'} {startIndex + 1} of {count} <span className="text-accent-blue">• Loop</span>
+          </div>
         </div>
       )}
     </div>
   )
+}
+
+function reelUrl(r: any): string {
+  if (typeof r === 'string') return r
+  return r?.url || ''
 }
 
 export default function ProjectDetailsPage() {
